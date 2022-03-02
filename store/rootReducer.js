@@ -1,5 +1,7 @@
 import { combineReducers } from "redux";
-import {} from "./tab/tabReducer";
+import tabReducer from "./tab/tabReducer";
+import marketReducer from "./market/marketReducer";
 export default combineReducers({
   tabReducer,
+  marketReducer,
 });

@@ -8,20 +8,25 @@ import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import rootReducer from "./store/rootReducer";
 
+import { connect } from "react-redux";
+import { setTradeModalVisibility } from "./store/tab/tabAction";
 const Stack = createStackNavigator();
 
+const store = createStore(rootReducer, applyMiddleware(thunk));
 const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-        initialRouteName={"MainLayout"}
-      >
-        <Stack.Screen name="MainLayout" component={Tabs} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+          initialRouteName={"MainLayout"}
+        >
+          <Stack.Screen name="MainLayout" component={Tabs} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 };
 
