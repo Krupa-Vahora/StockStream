@@ -32,7 +32,7 @@ const Tabs = ({ setTradeModalVisibility, isTradeModalVisible }) => {
       tabBarOptions={{
         showLabel: false,
         style: {
-          height: 140,
+          height: 125,
           backgroundColor: COLORS.primary,
           borderTopColor: "transparent",
         },

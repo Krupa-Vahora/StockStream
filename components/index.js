@@ -1,3 +1,5 @@
 import TabIcon from "./TabIcon";
 import IconTextButton from "./IconTextButton";
-export { TabIcon, IconTextButton };
+import BalanceInfo from "./BalanceInfo";
+import Chart from "./Chart";
+export { TabIcon, IconTextButton, BalanceInfo, Chart };
