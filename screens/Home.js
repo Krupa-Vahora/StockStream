@@ -25,6 +25,7 @@ const Home = ({ getHoldings, getCoinMarket, myHoldings, coins }) => {
     0
   );
   let percChange = (valueChange / (totalWallet - valueChange)) * 100;
+  // console.log(valueChange);
   function renderWalletInfoSection() {
     return (
       <View
@@ -128,7 +129,7 @@ const Home = ({ getHoldings, getCoinMarket, myHoldings, coins }) => {
                 : item.price_change_percentage_7d_in_currency > 0
                 ? COLORS.lightGreen
                 : COLORS.red;
-            console.log(priceColor);
+            // console.log(priceColor);
             return (
               <TouchableOpacity
                 style={{

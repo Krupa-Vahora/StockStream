@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { MainLayout } from ".";
+import { COLORS } from "../constants";
 
 const Profile = () => {
   return (
