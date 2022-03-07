@@ -133,6 +133,26 @@ const Tabs = ({ setTradeModalVisibility, isTradeModalVisible }) => {
           },
         }}
       />
+      {/* <Tab.Screen
+        name="News"
+        component={News}
+        options={{
+          tabBarIcon: ({ focused }) => {
+            if (!isTradeModalVisible) {
+              return (
+                <TabIcon focused={focused} icon={icons.market} label="Market" />
+              );
+            }
+          },
+        }}
+        listeners={{
+          tabPress: (e) => {
+            if (isTradeModalVisible) {
+              e.preventDefault();
+            }
+          },
+        }}
+      /> */}
       <Tab.Screen
         name="Profile"
         component={Profile}

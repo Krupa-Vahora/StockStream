@@ -7,7 +7,8 @@ import { getHoldings } from "../store/market/marketAction";
 import { MainLayout } from ".";
 import { BalanceInfo, Chart } from "../components";
 import { COLORS, FONTS, SIZES, dummyData, icons } from "../constants";
-const Portfolio = ({ getHoldings, myHoldings }) => {
+
+const Portfolio = ({ getHoldings, myHoldings, navigation }) => {
   const [selectedCoin, setSelectedCoin] = useState(null);
 
   useFocusEffect(
@@ -41,23 +42,57 @@ const Portfolio = ({ getHoldings, myHoldings }) => {
             marginTop: 60,
             color: COLORS.white,
             ...FONTS.largeTitle,
-            // paddingHorizontal: 10,
           }}
         >
           Portfolio
         </Text>
+        <AddPortfolio value="Add New Stock" type="button" />
+
         <BalanceInfo
           title="Current Balance"
           displayAmount={totalWallet}
           changePct={percChange}
           containerStyle={{
-            marginTop: SIZES.radius,
+            marginTop: SIZES.radiusTop,
+            // marginTop: -40,
             marginBottom: SIZES.padding,
           }}
         />
       </View>
     );
   }
+
+  const AddPortfolio = ({ value, type }) => {
+    return (
+      <TouchableOpacity
+        style={{
+          flexDirection: "row",
+          height: 50,
+          alignItems: "center",
+        }}
+        onPress={() => navigation.navigate("AddPortfolio")}
+      >
+        <Text
+          style={{
+            flex: 1,
+            color: COLORS.white,
+            ...FONTS.h3,
+            textAlign: "right",
+          }}
+        >
+          {value}
+        </Text>
+        <Image
+          source={icons.rightArrow}
+          style={{
+            height: 15,
+            width: 15,
+            tintColor: COLORS.white,
+          }}
+        />
+      </TouchableOpacity>
+    );
+  };
   return (
     <MainLayout>
       <View

@@ -1,14 +1,32 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, FlatList, Image } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  Image,
+  Button,
+} from "react-native";
 import { MainLayout } from ".";
 import { connect } from "react-redux";
 import { getCoinMarket, getHoldings } from "../store/market/marketAction";
 import { useFocusEffect } from "@react-navigation/native";
 import { COLORS, FONTS, SIZES, dummyData, icons } from "../constants";
 
-import { BalanceInfo, IconTextButton, Chart } from "../components";
+import {
+  BalanceInfo,
+  IconTextButton,
+  WatchListButton,
+  Chart,
+} from "../components";
 
-const Home = ({ getHoldings, getCoinMarket, myHoldings, coins }) => {
+const Home = ({
+  getHoldings,
+  getCoinMarket,
+  myHoldings,
+  coins,
+  navigation,
+}) => {
   const [selectedCoin, setSelectedCoin] = useState(null);
 
   useFocusEffect(
@@ -79,6 +97,41 @@ const Home = ({ getHoldings, getCoinMarket, myHoldings, coins }) => {
       </View>
     );
   }
+
+  const AddWatch = ({ value, type }) => {
+    return (
+      <TouchableOpacity
+        style={{
+          flexDirection: "row",
+          height: 50,
+          alignItems: "center",
+        }}
+        onPress={() => navigation.navigate("AddWatchList")}
+      >
+        <Text
+          style={{
+            flex: 1,
+            color: COLORS.white,
+            ...FONTS.h3,
+            textAlign: "right",
+            marginTop: -80,
+          }}
+        >
+          {value}
+        </Text>
+        <Image
+          source={icons.rightArrow}
+          style={{
+            height: 15,
+            width: 15,
+            tintColor: COLORS.white,
+            marginTop: -80,
+          }}
+        />
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <MainLayout>
       <View
@@ -110,11 +163,70 @@ const Home = ({ getHoldings, getCoinMarket, myHoldings, coins }) => {
           }}
           ListHeaderComponent={
             <View style={{ marginBottom: SIZES.radius }}>
+              {/* watchlist */}
+              <View
+                style={{
+                  // flexDirection: "row",
+                  marginTop: 20,
+                }}
+              >
+                <Text
+                  style={{
+                    color: COLORS.white,
+                    ...FONTS.h3,
+                    fontSize: 21,
+                  }}
+                >
+                  My Watchlist
+                </Text>
+                <AddWatch value="Add Watchlist" type="button" />
+
+                {/* Add Watch List */}
+                <View
+                  style={{
+                    flexDirection: "row",
+                  }}
+                >
+                  <WatchListButton
+                    label="Reliance"
+                    containerStyle={{
+                      flex: 1,
+                      flexDirection: "row",
+                      height: 40,
+                      marginRight: SIZES.radius,
+                    }}
+                    onPress={() => console.log("watchlist")}
+                  />
+                  <WatchListButton
+                    label="Wipro"
+                    containerStyle={{
+                      flex: 1,
+                      flexDirection: "row",
+                      height: 40,
+                      marginRight: SIZES.radius,
+                    }}
+                    onPress={() => console.log("watchlist")}
+                  />
+
+                  <WatchListButton
+                    label="TCS"
+                    containerStyle={{
+                      flex: 1,
+                      flexDirection: "row",
+                      height: 40,
+                      marginRight: SIZES.radius,
+                    }}
+                    onPress={() => console.log("watchlist")}
+                  />
+                </View>
+              </View>
+              {/* <AddWatch value="Add Watchlist" type="button" /> */}
               <Text
                 style={{
                   color: COLORS.white,
                   ...FONTS.h3,
                   fontSize: 21,
+                  marginTop: 20,
                 }}
               >
                 Top Cryptocurrency
@@ -130,6 +242,7 @@ const Home = ({ getHoldings, getCoinMarket, myHoldings, coins }) => {
                 ? COLORS.lightGreen
                 : COLORS.red;
             // console.log(priceColor);
+
             return (
               <TouchableOpacity
                 style={{
@@ -138,7 +251,9 @@ const Home = ({ getHoldings, getCoinMarket, myHoldings, coins }) => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => setSelectedCoin(item)}
+                // onPress={() => setSelectedCoin(item)}
+                //onPress={() => console.log("test")}
+                onPress={() => navigation.navigate("StockDetail")}
               >
                 {/* logo */}
                 <View

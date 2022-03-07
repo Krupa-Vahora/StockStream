@@ -20,7 +20,6 @@ import { getCoinMarket } from "../store/market/marketAction";
 import { MainLayout } from ".";
 import { COLORS, FONTS, SIZES, icons, constants } from "../constants";
 import { Headerbar, TextButton } from "../components";
-import { measure } from "react-native-reanimated";
 
 const marketTabs = constants.marketTabs.map((marketTab) => ({
   ...marketTab,
@@ -28,13 +27,13 @@ const marketTabs = constants.marketTabs.map((marketTab) => ({
 }));
 
 const TabIndicator = ({ measureLayout, scrollX }) => {
-  const inputRange = marketTabs.map((_, i) => {
-    i * SIZES.width;
-  });
-  const translateX = scrollX.interpolate({
-    inputRange,
-    outputRange: measureLayout.map((measure) => measure.x),
-  });
+  // const inputRange = marketTabs.map((_, i) => {
+  //   i * SIZES.width;
+  // });
+  // const translateX = scrollX.interpolate({
+  //   inputRange,
+  //   outputRange: measureLayout.map((measure) => measure.x),
+  // });
 
   return (
     <Animated.View
@@ -42,14 +41,13 @@ const TabIndicator = ({ measureLayout, scrollX }) => {
         position: "absolute",
         left: 0,
         height: "100%",
-        // width: (SIZES.width - SIZES.radius * 2) / 2,
         borderRadius: SIZES.radius,
-        // backgroundColor: COLORS.lightGray,
-        transform: [
-          {
-            translateX,
-          },
-        ],
+        backgroundColor: COLORS.red,
+        // transform: [
+        //   {
+        //     translateX,
+        //   },
+        // ],
       }}
     />
   );

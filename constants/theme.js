@@ -24,6 +24,7 @@ export const SIZES = {
   base: 8,
   font: 14,
   radius: 12,
+  radiusTop: -25,
   padding: 24,
 
   // font sizes
@@ -38,6 +39,7 @@ export const SIZES = {
   body3: 16,
   body4: 14,
   body5: 12,
+  body6: 18,
 
   // app dimensions
   width,
@@ -74,6 +76,12 @@ export const FONTS = {
     fontFamily: "Roboto-Regular",
     fontSize: SIZES.body5,
     lineHeight: 22,
+  },
+  body6: {
+    fontFamily: "Roboto-Regular",
+    fontSize: SIZES.body6,
+    lineHeight: 22,
+    fontWeight: "bold",
   },
 };
 

@@ -7,9 +7,9 @@ import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import rootReducer from "./store/rootReducer";
-
 import { connect } from "react-redux";
 import { setTradeModalVisibility } from "./store/tab/tabAction";
+import { AddPortfolio, Portfolio, AddWatchList, StockDetail } from "./screens";
 const Stack = createStackNavigator();
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
@@ -24,6 +24,10 @@ const App = () => {
           initialRouteName={"MainLayout"}
         >
           <Stack.Screen name="MainLayout" component={Tabs} />
+          <Stack.Screen name="AddPortfolio" component={AddPortfolio} />
+          <Stack.Screen name="Portfolio" component={Portfolio} />
+          <Stack.Screen name="AddWatchList" component={AddWatchList} />
+          <Stack.Screen name="StockDetail" component={StockDetail} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
