@@ -13,7 +13,7 @@ const WatchListButton = ({ label, containerStyle, onPress }) => {
         height: 80,
         width: 70,
         borderRadius: SIZES.radius,
-        backgroundColor: COLORS.lightGray3,
+        backgroundColor: "#D3D3D3",
         ...containerStyle,
       }}
       onPress={onPress}

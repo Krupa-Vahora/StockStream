@@ -6,6 +6,8 @@ import Headerbar from "./Headerbar";
 import TextButton from "./TextButton";
 import WatchListButton from "./WatchListButton";
 import InputPortfolio from "./InputPortfolio";
+import StockDetailInfo from "./StockDetailInfo";
+import NewsContainer from "./NewsContainer";
 
 export {
   TabIcon,
@@ -16,4 +18,6 @@ export {
   TextButton,
   InputPortfolio,
   WatchListButton,
+  StockDetailInfo,
+  NewsContainer,
 };

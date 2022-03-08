@@ -10,6 +10,13 @@ const upArrow = require("../assets/icons/up-arrow.png");
 const verified = require("../assets/icons/verified.png");
 const withdraw = require("../assets/icons/withdraw.png");
 const plus = require("../assets/icons/plus.png");
+const chart = require("../assets/images/chartStatic.jpeg");
+const leftArrow = require("../assets/icons/leftArrow.jpeg");
+const news = require("../assets/icons/news.png");
+const reliance = require("../assets/images/reliance.png");
+const tcs = require("../assets/images/tata.png");
+const adani = require("../assets/images/adani.png");
+
 export default {
   briefcase,
   close,
@@ -23,4 +30,10 @@ export default {
   verified,
   withdraw,
   plus,
+  chart,
+  leftArrow,
+  news,
+  reliance,
+  tcs,
+  adani,
 };
