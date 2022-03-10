@@ -4,13 +4,13 @@ import { COLORS, FONTS, SIZES } from "../constants";
 
 const Overview = ({ label, price, containerStyle }) => {
   return (
-    <TouchableOpacity
+    <View
       style={{
         marginTop: 20,
         alignItems: "center",
         justifyContent: "space-around",
         borderRadius: SIZES.radius,
-        backgroundColor: COLORS.white,
+        backgroundColor: COLORS.black,
         flex: 0.5,
         height: 70,
         marginRight: SIZES.radius,
@@ -18,7 +18,7 @@ const Overview = ({ label, price, containerStyle }) => {
     >
       <Text
         style={{
-          ...FONTS.h3,
+          ...FONTS.h2,
           fontWeight: "bold",
           ...containerStyle,
         }}
@@ -27,13 +27,13 @@ const Overview = ({ label, price, containerStyle }) => {
       </Text>
       <Text
         style={{
-          ...FONTS.h3,
+          ...FONTS.h2,
           ...containerStyle,
         }}
       >
         {price}
       </Text>
-    </TouchableOpacity>
+    </View>
   );
 };
 export default Overview;

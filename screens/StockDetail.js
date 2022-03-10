@@ -185,8 +185,16 @@ const StockDetail = ({
             marginRight: 30,
           }}
         >
-          <Overview label="Volume" price="52,58,130" />
-          <Overview label="Info" price="Private Sector" />
+          <Overview
+            label="Volume"
+            price="52,58,130"
+            containerStyle={{ color: COLORS.white }}
+          />
+          <Overview
+            label="Info"
+            price="Private Sector"
+            containerStyle={{ color: COLORS.white }}
+          />
         </View>
       </View>
     </MainLayout>

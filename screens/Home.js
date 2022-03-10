@@ -18,7 +18,21 @@ import {
   IconTextButton,
   WatchListButton,
   Chart,
+  ScriptInfo,
 } from "../components";
+
+const SCRIPT_DATA = [
+  {
+    name: "SENSEX",
+    value: "53,900.0",
+    per: "0.87%",
+  },
+  {
+    name: "NIFTY 50",
+    value: "16,135.05",
+    per: "0.78%",
+  },
+];
 
 const Home = ({
   getHoldings,
@@ -44,27 +58,45 @@ const Home = ({
   );
   let percChange = (valueChange / (totalWallet - valueChange)) * 100;
   // console.log(valueChange);
-  function renderWalletInfoSection() {
+  const ItemDivider = () => {
     return (
       <View
         style={{
-          paddingHorizontal: SIZES.padding,
-          borderBottomLeftRadius: 25,
-          borderBottomRightRadius: 25,
-          backgroundColor: COLORS.gray,
+          marginTop: 20,
+          height: 120,
+          width: 1,
+          backgroundColor: "white",
+        }}
+      />
+    );
+  };
+
+  function renderScriptInfoSection() {
+    return (
+      <View
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          marginTop: 50,
         }}
       >
-        {/* balance info  */}
-        <BalanceInfo
-          title="Your Wallet"
-          displayAmount={totalWallet}
-          changePct={percChange}
-          containerStyle={{
-            marginTop: 50,
+        {/* sensex and nifty info  */}
+
+        <FlatList
+          contentContainerStyle={{
+            justifyContent: "center",
           }}
+          horizontal={true}
+          data={SCRIPT_DATA}
+          renderItem={({ item }) => {
+            return <ScriptInfo item={item} />;
+          }}
+          keyExtractor={(item) => item._id}
+          ItemSeparatorComponent={ItemDivider}
         />
+
         {/* button  */}
-        <View
+        {/* <View
           style={{
             flexDirection: "row",
             marginTop: 30,
@@ -73,27 +105,25 @@ const Home = ({
           }}
         >
           <IconTextButton
-            label="Transfer"
-            icon={icons.send}
+            label="Sensex"
             containerStyle={{
               flex: 1,
-              height: 40,
+              height: 80,
               marginRight: SIZES.radius,
             }}
-            onPress={() => console.log("transfer")}
+            onPress={() => console.log("sensex")}
           />
 
           <IconTextButton
-            label="Withdraw"
-            icon={icons.withdraw}
+            label="NIFTY"
             containerStyle={{
               flex: 1,
-              height: 40,
+              height: 80,
               marginRight: SIZES.radius,
             }}
-            onPress={() => console.log("withdraw")}
+            onPress={() => console.log("nifty")}
           />
-        </View>
+        </View> */}
       </View>
     );
   }
@@ -141,11 +171,11 @@ const Home = ({
         }}
       >
         {/* Header  */}
-        {renderWalletInfoSection()}
+        {renderScriptInfoSection()}
         {/* Chart  */}
         <Chart
           containerStyle={{
-            marginTop: SIZES.padding * 2,
+            marginTop: SIZES.padding,
           }}
           chartPrices={
             selectedCoin

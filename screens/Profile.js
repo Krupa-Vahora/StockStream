@@ -149,7 +149,7 @@ const Profile = ({ navigation }) => {
               <Text
                 style={{
                   color: COLORS.white,
-                  ...FONTS.h1,
+                  ...FONTS.h2,
                   paddingLeft: 100,
                   // textAlign: "center",
                 }}

@@ -8,6 +8,7 @@ import WatchListButton from "./WatchListButton";
 import InputPortfolio from "./InputPortfolio";
 import StockDetailInfo from "./StockDetailInfo";
 import NewsContainer from "./NewsContainer";
+import ScriptInfo from "./ScriptInfo";
 
 export {
   TabIcon,
@@ -20,4 +21,5 @@ export {
   WatchListButton,
   StockDetailInfo,
   NewsContainer,
+  ScriptInfo,
 };

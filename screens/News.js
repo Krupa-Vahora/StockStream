@@ -1,19 +1,28 @@
-import { View, Text, FlatList, ScrollView } from "react-native";
+import { View, Text, FlatList, Image } from "react-native";
 import React from "react";
 import { COLORS, FONTS, icons } from "../constants";
 import { NewsContainer } from "../components/";
+import moment from "moment";
+const today = moment(new Date()).format("MMM D YYYY");
+// console.log(today);
 const LIST_DATA = [
   {
     companyName: "Reliance",
+    content: "Today Reliance share price is down",
     icon: icons.reliance,
+    date: today,
   },
   {
     companyName: "L&T",
-    icon: icons.reliance,
+    content: "Today L&T share price is Up",
+    icon: icons.landt,
+    date: today,
   },
   {
     companyName: "TCS",
-    icon: icons.reliance,
+    content: "Today TCS share price is Up",
+    icon: icons.tcs,
+    date: today,
   },
 ];
 
@@ -37,6 +46,7 @@ const News = () => {
       </Text>
       <FlatList
         data={LIST_DATA}
+        keyExtractor={(item) => item._id}
         renderItem={({ item }) => {
           return <NewsContainer item={item} />;
         }}

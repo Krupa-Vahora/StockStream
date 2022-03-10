@@ -16,6 +16,7 @@ export const holdings = [
 export const profile = {
   id: 8888888,
   email: "vahorakrupa99@gmail.com",
+  name: "Krupa Vahora",
 };
 
 export const settings = {

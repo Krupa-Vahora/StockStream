@@ -15,7 +15,8 @@ const leftArrow = require("../assets/icons/leftArrow.jpeg");
 const news = require("../assets/icons/news.png");
 const reliance = require("../assets/images/reliance.png");
 const tcs = require("../assets/images/tata.png");
-const adani = require("../assets/images/adani.png");
+const landt = require("../assets/images/l&t.jpeg");
+const avatar = require("../assets/images/avatar.png");
 
 export default {
   briefcase,
@@ -35,5 +36,6 @@ export default {
   news,
   reliance,
   tcs,
-  adani,
+  landt,
+  avatar,
 };

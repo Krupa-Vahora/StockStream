@@ -17,9 +17,9 @@ const StockDetailInfo = ({
       {/* figures */}
       <Text
         style={{
-          ...FONTS.h3,
+          ...FONTS.h2,
           color: COLORS.lightGray3,
-          marginTop: -30,
+          marginTop: 20,
         }}
       >
         Current Value:
@@ -80,7 +80,7 @@ const StockDetailInfo = ({
                 : changePct > 0
                 ? COLORS.lightGreen
                 : COLORS.red,
-            ...FONTS.h4,
+            ...FONTS.h3,
           }}
         >
           {changePct}%
