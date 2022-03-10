@@ -1,3 +1,4 @@
+import { NavigationContainer } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
   View,
@@ -8,7 +9,7 @@ import {
   Switch,
 } from "react-native";
 import { MainLayout } from ".";
-import { Headerbar } from "../components";
+// import { Headerbar } from "../components";
 import { COLORS, FONTS, SIZES, dummyData, icons } from "../constants";
 
 const SectionTitle = ({ title }) => {
@@ -101,7 +102,7 @@ const Setting = ({ title, value, type, onPress }) => {
   }
 };
 
-const Profile = () => {
+const Profile = ({ navigation }) => {
   const [faceId, setFaceId] = useState(true);
   return (
     <MainLayout>
@@ -113,14 +114,30 @@ const Profile = () => {
         }}
       >
         {/* Header  */}
-        <Headerbar title="Profile" />
+        {/* <Headerbar title="Profile" /> */}
+        <View
+          style={{
+            alignItems: "center",
+            marginTop: 40,
+          }}
+        >
+          <Image
+            source={icons.avatar}
+            style={{
+              marginTop: 20,
+              height: 150,
+              width: 150,
+              borderRadius: 100,
+            }}
+          />
+        </View>
         {/* details  */}
         <ScrollView>
           {/* email  & user id*/}
           <View
             style={{
               flexDirection: "row",
-              marginTop: SIZES.radius,
+              marginTop: 30,
             }}
           >
             {/* email  */}
@@ -132,7 +149,18 @@ const Profile = () => {
               <Text
                 style={{
                   color: COLORS.white,
+                  ...FONTS.h1,
+                  paddingLeft: 100,
+                  // textAlign: "center",
+                }}
+              >
+                {dummyData.profile.name}
+              </Text>
+              <Text
+                style={{
+                  color: COLORS.white,
                   ...FONTS.h3,
+                  marginTop: 20,
                 }}
               >
                 {dummyData.profile.email}
@@ -151,6 +179,7 @@ const Profile = () => {
               style={{
                 flexDirection: "row",
                 alignItems: "center",
+                marginTop: 40,
               }}
             >
               <Image
@@ -178,7 +207,7 @@ const Profile = () => {
             title="Launch Screen"
             value="Home"
             type="button"
-            onPress={() => console.log("PRESSED")}
+            onPress={() => navigation.navigate("Home")}
           />
 
           <Setting
@@ -190,7 +219,7 @@ const Profile = () => {
           <SectionTitle title="Account" />
           <Setting
             title="Payment Currency"
-            value="USD"
+            value="Rs"
             type="button"
             onPress={() => console.log("PRESSED")}
           />
@@ -207,13 +236,13 @@ const Profile = () => {
             type="switch"
             onPress={(value) => setFaceId(value)}
           />
-          <Setting
+          {/* <Setting
             title="Password Settings"
             value=""
             type="button"
             onPress={() => console.log("PRESSED")}
-          />
-          <Setting
+          /> */}
+          {/* <Setting
             title="Change Password "
             value=""
             type="button"
@@ -224,7 +253,7 @@ const Profile = () => {
             value=""
             type="button"
             onPress={() => console.log("PRESSED")}
-          />
+          /> */}
         </ScrollView>
       </View>
     </MainLayout>
