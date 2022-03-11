@@ -19,10 +19,10 @@ const StockDetailInfo = ({
         style={{
           ...FONTS.h2,
           color: COLORS.lightGray3,
-          marginTop: 20,
+          marginTop: -20,
         }}
       >
-        Current Value:
+        Current Value
       </Text>
       <View
         style={{

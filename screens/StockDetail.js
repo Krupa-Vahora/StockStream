@@ -90,7 +90,7 @@ const StockDetail = ({
         <View
           style={{
             flexDirection: "row",
-            marginTop: 30,
+            marginTop: 10,
             marginBottom: -15,
             paddingHorizontal: SIZES.radius,
           }}
