@@ -11,15 +11,15 @@ const StockDetailInfo = ({
   return (
     <View style={{ ...containerStyle }}>
       {/* title */}
-      <Text style={{ color: COLORS.white, ...FONTS.h1, textAlign: "justify" }}>
+      <Text style={{ color: COLORS.white, ...FONTS.h1, textAlign: "center" }}>
         {title}
       </Text>
       {/* figures */}
       <Text
         style={{
-          ...FONTS.h2,
+          ...FONTS.h3,
           color: COLORS.lightGray3,
-          marginTop: -20,
+          // marginTop: 20,
         }}
       >
         Current Value
@@ -73,7 +73,7 @@ const StockDetailInfo = ({
         <Text
           style={{
             marginLeft: SIZES.base,
-            alignSelf: "flex-end",
+            // alignSelf: "flex-end",
             color:
               changePct == 0
                 ? COLORS.lightGray3
@@ -84,17 +84,6 @@ const StockDetailInfo = ({
           }}
         >
           {changePct}%
-        </Text>
-
-        <Text
-          style={{
-            marginLeft: SIZES.radius,
-            alignSelf: "flex-end",
-            color: COLORS.lightGray3,
-            ...FONTS.h5,
-          }}
-        >
-          7d change
         </Text>
       </View>
     </View>

@@ -1,10 +1,12 @@
 import { View, Text, FlatList, Image } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { COLORS, FONTS, icons } from "../constants";
 import { NewsContainer } from "../components/";
 import moment from "moment";
 const today = moment(new Date()).format("MMM D YYYY");
-// console.log(today);
+import * as newsAction from "../store/news/newsAction";
+import { useSelector, useDispatch } from "react-redux";
+
 const LIST_DATA = [
   {
     companyName: "Reliance",
@@ -27,6 +29,13 @@ const LIST_DATA = [
 ];
 
 const News = () => {
+  const news = useSelector((state) => state.news.news);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(newsAction.getNews());
+  });
+
   return (
     <View
       style={{
@@ -44,8 +53,15 @@ const News = () => {
       >
         News
       </Text>
-      <FlatList
+      {/* <FlatList
         data={LIST_DATA}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => {
+          return <NewsContainer item={item} />;
+        }}
+      /> */}
+      <FlatList
+        data={news}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => {
           return <NewsContainer item={item} />;

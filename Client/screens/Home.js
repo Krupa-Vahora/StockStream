@@ -1,25 +1,14 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-  Image,
-  Button,
-} from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, TouchableOpacity, FlatList, Image } from "react-native";
 import { MainLayout } from ".";
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { getCoinMarket, getHoldings } from "../store/market/marketAction";
-import { useFocusEffect } from "@react-navigation/native";
+
 import { COLORS, FONTS, SIZES, dummyData, icons } from "../constants";
 
-import {
-  BalanceInfo,
-  IconTextButton,
-  WatchListButton,
-  Chart,
-  ScriptInfo,
-} from "../components";
+import * as stockAction from "../store/market/stockAction";
+import { WatchListButton, Chart, ScriptInfo } from "../components";
+import { param } from "express/lib/request";
 
 const SCRIPT_DATA = [
   {
@@ -34,36 +23,50 @@ const SCRIPT_DATA = [
   },
 ];
 
-const Home = ({
-  getHoldings,
-  getCoinMarket,
-  myHoldings,
-  coins,
-  navigation,
-}) => {
+const Watchlist = [
+  {
+    label: "Wipro",
+  },
+  {
+    label: "Reliance",
+  },
+  {
+    label: "TCS",
+  },
+];
+
+const Home = ({ coins, navigation }) => {
   const [selectedCoin, setSelectedCoin] = useState(null);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      getHoldings((holdings = dummyData.holdings));
-      getCoinMarket();
-    }, [getHoldings, getCoinMarket])
-  );
+  const stock = useSelector((state) => state.stock.stocks);
+  const stockInfo = useSelector((state) => state.stock.stockInfo);
 
-  let totalWallet = myHoldings.reduce((a, b) => a + (b.total || 0), 0);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(stockAction.getStock());
+    dispatch(stockAction.getStockInfo());
+  }, []);
+  useEffect(() => {
+    stock?.map((item, key) => {
+      if (stockInfo?.length > 0) {
+        item.price = stockInfo[key]?.price ?? 0;
+        item.high = stockInfo[key]?.high ?? 0;
+        item.low = stockInfo[key]?.low ?? 0;
+        item.qty = stockInfo[key]?.qty ?? 0;
+        item.volume = stockInfo[key]?.volume ?? 0;
+        item.percentage = stockInfo[key]?.percentage ?? 0;
+        item.id = stockInfo[key]?._id ?? 0;
+        // console.log("id", item.id);
+      }
+    });
+  }, [stock]);
 
-  let valueChange = myHoldings.reduce(
-    (a, b) => a + (b.holdings_value_change_7d || 0),
-    0
-  );
-  let percChange = (valueChange / (totalWallet - valueChange)) * 100;
-  // console.log(valueChange);
   const ItemDivider = () => {
     return (
       <View
         style={{
           marginTop: 20,
-          height: 120,
+          height: 110,
           width: 1,
           backgroundColor: "white",
         }}
@@ -94,36 +97,6 @@ const Home = ({
           keyExtractor={(item) => item._id}
           ItemSeparatorComponent={ItemDivider}
         />
-
-        {/* button  */}
-        {/* <View
-          style={{
-            flexDirection: "row",
-            marginTop: 30,
-            marginBottom: -15,
-            paddingHorizontal: SIZES.radius,
-          }}
-        >
-          <IconTextButton
-            label="Sensex"
-            containerStyle={{
-              flex: 1,
-              height: 80,
-              marginRight: SIZES.radius,
-            }}
-            onPress={() => console.log("sensex")}
-          />
-
-          <IconTextButton
-            label="NIFTY"
-            containerStyle={{
-              flex: 1,
-              height: 80,
-              marginRight: SIZES.radius,
-            }}
-            onPress={() => console.log("nifty")}
-          />
-        </View> */}
       </View>
     );
   }
@@ -173,7 +146,7 @@ const Home = ({
         {/* Header  */}
         {renderScriptInfoSection()}
         {/* Chart  */}
-        <Chart
+        {/* <Chart
           containerStyle={{
             marginTop: SIZES.padding,
           }}
@@ -182,96 +155,78 @@ const Home = ({
               ? selectedCoin?.sparkline_in_7d.price
               : coins[0]?.sparkline_in_7d.price
           }
-        />
+        /> */}
+        {/* watchlist */}
+        <View
+          style={{
+            marginTop: 30,
+            marginLeft: 10,
+          }}
+        >
+          <Text
+            style={{
+              color: COLORS.white,
+              ...FONTS.h2,
+              // fontSize: 21,
+              marginLeft: 10,
+            }}
+          >
+            My Watchlist
+          </Text>
+          <AddWatch value="Add Watchlist" type="button" />
+
+          {/* Add Watch List */}
+          <View
+            style={{
+              flexDirection: "row",
+              marginTop: -20,
+            }}
+          >
+            <FlatList
+              contentContainerStyle={{
+                justifyContent: "center",
+              }}
+              horizontal={true}
+              data={Watchlist}
+              renderItem={({ item }) => {
+                return (
+                  <WatchListButton
+                    item={item}
+                    onPress={() => console.log("watchlist")}
+                  />
+                );
+              }}
+              keyExtractor={(item) => item._id}
+            />
+          </View>
+        </View>
+        <Text
+          style={{
+            color: COLORS.white,
+            ...FONTS.h2,
+            marginTop: 25,
+            // marginLeft: -10,
+            textAlign: "center",
+          }}
+        >
+          Top Shares
+        </Text>
         {/* Top currency  */}
         <FlatList
-          data={coins}
-          keyExtractor={(item) => item.id}
+          data={stock}
+          keyExtractor={(item) => item._id}
           contentContainerStyle={{
             marginTop: 30,
             paddingHorizontal: SIZES.padding,
           }}
-          ListHeaderComponent={
-            <View style={{ marginBottom: SIZES.radius }}>
-              {/* watchlist */}
-              <View
-                style={{
-                  // flexDirection: "row",
-                  marginTop: 20,
-                }}
-              >
-                <Text
-                  style={{
-                    color: COLORS.white,
-                    ...FONTS.h3,
-                    fontSize: 21,
-                  }}
-                >
-                  My Watchlist
-                </Text>
-                <AddWatch value="Add Watchlist" type="button" />
-
-                {/* Add Watch List */}
-                <View
-                  style={{
-                    flexDirection: "row",
-                  }}
-                >
-                  <WatchListButton
-                    label="Reliance"
-                    containerStyle={{
-                      flex: 1,
-                      flexDirection: "row",
-                      height: 40,
-                      marginRight: SIZES.radius,
-                    }}
-                    onPress={() => console.log("watchlist")}
-                  />
-                  <WatchListButton
-                    label="Wipro"
-                    containerStyle={{
-                      flex: 1,
-                      flexDirection: "row",
-                      height: 40,
-                      marginRight: SIZES.radius,
-                    }}
-                    onPress={() => console.log("watchlist")}
-                  />
-
-                  <WatchListButton
-                    label="TCS"
-                    containerStyle={{
-                      flex: 1,
-                      flexDirection: "row",
-                      height: 40,
-                      marginRight: SIZES.radius,
-                    }}
-                    onPress={() => console.log("watchlist")}
-                  />
-                </View>
-              </View>
-              {/* <AddWatch value="Add Watchlist" type="button" /> */}
-              <Text
-                style={{
-                  color: COLORS.white,
-                  ...FONTS.h3,
-                  fontSize: 21,
-                  marginTop: 20,
-                }}
-              >
-                Top Cryptocurrency
-              </Text>
-            </View>
-          }
           renderItem={({ item }) => {
-            // console.log(item.price_change_percentage_7d_in_currency);
+            console.log("id", item.id);
             let priceColor =
-              item.price_change_percentage_7d_in_currency == 0
+              item.percentage == 0
                 ? COLORS.lightGray3
-                : item.price_change_percentage_7d_in_currency > 0
+                : item.percentage > 0
                 ? COLORS.lightGreen
                 : COLORS.red;
-            // console.log(priceColor);
 
             return (
               <TouchableOpacity
@@ -281,24 +236,12 @@ const Home = ({
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                // onPress={() => setSelectedCoin(item)}
-                //onPress={() => console.log("test")}
-                onPress={() => navigation.navigate("StockDetail")}
+                onPress={() =>
+                  navigation.navigate("StockDetail", {
+                    stock: item,
+                  })
+                }
               >
-                {/* logo */}
-                <View
-                  style={{
-                    width: 35,
-                  }}
-                >
-                  <Image
-                    source={{ uri: item.image }}
-                    style={{
-                      height: 20,
-                      width: 20,
-                    }}
-                  />
-                </View>
                 {/* name  */}
                 <View
                   style={{
@@ -311,7 +254,7 @@ const Home = ({
                       ...FONTS.h3,
                     }}
                   >
-                    {item.name}
+                    {item.companyName}
                   </Text>
                 </View>
                 {/* figures */}
@@ -324,7 +267,7 @@ const Home = ({
                       ...FONTS.h4,
                     }}
                   >
-                    ${item.current_price}
+                    {parseFloat(item?.price).toFixed(2) ?? 0.0}
                   </Text>
                   <View
                     style={{
@@ -333,7 +276,7 @@ const Home = ({
                       justifyContent: "flex-end",
                     }}
                   >
-                    {item.price_change_percentage_7d_in_currency != 0 && (
+                    {item.percentage != 0 && (
                       <Image
                         source={icons.upArrow}
                         style={{
@@ -341,12 +284,13 @@ const Home = ({
                           width: 10,
                           tintColor: priceColor,
                           transform:
-                            item.price_change_percentage_7d_in_currency > 0
+                            item.percentage > 0
                               ? [{ rotate: "45deg" }]
                               : [{ rotate: "125deg" }],
                         }}
                       />
                     )}
+
                     <Text
                       style={{
                         marginLeft: 5,
@@ -355,7 +299,7 @@ const Home = ({
                         lineHeight: 15,
                       }}
                     >
-                      {item.price_change_percentage_7d_in_currency.toFixed(2)}%
+                      {item?.percentage}%
                     </Text>
                   </View>
                 </View>
@@ -369,61 +313,61 @@ const Home = ({
   );
 };
 
-// export default Home;
-function mapStateToProps(state) {
-  return {
-    myHoldings: state.marketReducer.myHoldings,
-    coins: state.marketReducer.coins,
-  };
-}
+export default Home;
+// function mapStateToProps(state) {
+//   return {
+//     myHoldings: state.marketReducer.myHoldings,
+//     coins: state.marketReducer.coins,
+//   };
+// }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    getHoldings: (
-      holdings,
-      currency,
-      coinList,
-      orderBy,
-      sparkline,
-      priceChangePerc,
-      perPage,
-      page
-    ) => {
-      return dispatch(
-        getHoldings(
-          holdings,
-          currency,
-          coinList,
-          orderBy,
-          sparkline,
-          priceChangePerc,
-          perPage,
-          page
-        )
-      );
-    },
+// function mapDispatchToProps(dispatch) {
+//   return {
+//     getHoldings: (
+//       holdings,
+//       currency,
+//       coinList,
+//       orderBy,
+//       sparkline,
+//       priceChangePerc,
+//       perPage,
+//       page
+//     ) => {
+//       return dispatch(
+//         getHoldings(
+//           holdings,
+//           currency,
+//           coinList,
+//           orderBy,
+//           sparkline,
+//           priceChangePerc,
+//           perPage,
+//           page
+//         )
+//       );
+//     },
 
-    getCoinMarket: (
-      currency,
-      coinList,
-      orderBy,
-      sparkline,
-      priceChangePerc,
-      perPage,
-      page
-    ) => {
-      return dispatch(
-        getCoinMarket(
-          currency,
-          coinList,
-          orderBy,
-          sparkline,
-          priceChangePerc,
-          perPage,
-          page
-        )
-      );
-    },
-  };
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+//     getCoinMarket: (
+//       currency,
+//       coinList,
+//       orderBy,
+//       sparkline,
+//       priceChangePerc,
+//       perPage,
+//       page
+//     ) => {
+//       return dispatch(
+//         getCoinMarket(
+//           currency,
+//           coinList,
+//           orderBy,
+//           sparkline,
+//           priceChangePerc,
+//           perPage,
+//           page
+//         )
+//       );
+//     },
+//   };
+// }
+// export default connect(mapStateToProps, mapDispatchToProps)(Home);

@@ -1,29 +1,28 @@
 import React from "react";
 import { Text, Image, TouchableOpacity } from "react-native";
 import { COLORS, FONTS, SIZES } from "../constants";
-const WatchListButton = ({ label, containerStyle, onPress }) => {
+const WatchListButton = (props) => {
+  const { item } = props;
   return (
     <TouchableOpacity
       style={{
-        marginTop: -30,
+        marginLeft: 10,
         flex: 1,
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-        height: 80,
-        width: 70,
-        borderRadius: SIZES.radius,
+        height: 50,
+        width: 80,
+        borderRadius: 10,
         backgroundColor: "#D3D3D3",
-        ...containerStyle,
       }}
-      onPress={onPress}
     >
       <Text
         style={{
           ...FONTS.h3,
         }}
       >
-        {label}
+        {item.label}
       </Text>
     </TouchableOpacity>
   );

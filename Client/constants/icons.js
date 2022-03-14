@@ -18,6 +18,7 @@ const tcs = require("../assets/images/tata.png");
 const landt = require("../assets/images/l&t.jpeg");
 const avatar = require("../assets/images/avatar.png");
 const avatar1 = require("../assets/images/avatar1.png");
+const newsImage = require("../assets/images/news.jpeg");
 
 export default {
   briefcase,
@@ -40,4 +41,5 @@ export default {
   landt,
   avatar,
   avatar1,
+  newsImage,
 };

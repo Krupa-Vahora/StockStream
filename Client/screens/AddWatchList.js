@@ -1,4 +1,5 @@
 import { View, Text, Button } from "react-native";
+import { SearchBar } from "react-native-elements";
 import React from "react";
 import { COLORS, FONTS } from "../constants";
 const AddWatchList = ({ navigation }) => {
@@ -15,9 +16,10 @@ const AddWatchList = ({ navigation }) => {
           marginLeft: 10,
           color: COLORS.white,
           ...FONTS.h1,
+          textAlign: "center",
         }}
       >
-        Edit Watchlist
+        Update Your Watchlist
       </Text>
 
       <View

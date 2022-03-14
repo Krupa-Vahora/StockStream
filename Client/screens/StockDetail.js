@@ -3,36 +3,12 @@ import { View, Text, TouchableOpacity, Image, Button } from "react-native";
 
 import { MainLayout } from ".";
 
-// import { connect } from "react-redux";
-// import { getCoinMarket, getHoldings } from "../store/market/marketAction";
-import { COLORS, FONTS, SIZES, dummyData, icons } from "../constants";
-
+import { COLORS, FONTS, SIZES, icons } from "../constants";
 import { IconTextButton, StockDetailInfo } from "../components";
 import Overview from "../components/Overview";
-const StockDetail = ({
-  // getHoldings,
-  // getCoinMarket,
-  // myHoldings,
-  // coins,
-  navigation,
-}) => {
-  //const [selectedCoin, setSelectedCoin] = useState(null);
-
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     getHoldings((holdings = dummyData.holdings));
-  //     getCoinMarket();
-  //   }, [getHoldings, getCoinMarket])
-  // );
-
-  //let totalWallet = myHoldings.reduce((a, b) => a + (b.total || 0), 0);
-
-  // let valueChange = myHoldings.reduce(
-  //   (a, b) => a + (b.holdings_value_change_7d || 0),
-  //   0
-  // );
-  // let percChange = (valueChange / (totalWallet - valueChange)) * 100;
-  // console.log(valueChange);
+const StockDetail = (props) => {
+  const { navigation, route } = props;
+  const stockData = route.params.stock;
   const BackHome = () => {
     return (
       <TouchableOpacity
@@ -40,7 +16,8 @@ const StockDetail = ({
           flexDirection: "row",
           alignItems: "center",
         }}
-        onPress={() => navigation.navigate("Home")}
+        // onPress={() => navigation.navigate("Home")}
+        onPress={() => navigation.goBack()}
       >
         <Text
           style={{
@@ -77,9 +54,9 @@ const StockDetail = ({
         {/* company name-stock info */}
 
         <StockDetailInfo
-          title="Tata Consultancy Service"
-          displayAmount="2203"
-          changePct="-35"
+          title={stockData.companyName}
+          displayAmount={stockData.price}
+          changePct={stockData.percentage}
           containerStyle={{
             marginTop: 60,
             alignItems: "center",
@@ -90,7 +67,7 @@ const StockDetail = ({
         <View
           style={{
             flexDirection: "row",
-            marginTop: 10,
+            marginTop: 20,
             marginBottom: -15,
             paddingHorizontal: SIZES.radius,
           }}
@@ -169,12 +146,12 @@ const StockDetail = ({
         >
           <Overview
             label="High"
-            price="2246.00"
+            price={stockData.high.toFixed(2)}
             containerStyle={{ color: COLORS.green }}
           />
           <Overview
             label="Low"
-            price="2202.00"
+            price={stockData.low}
             containerStyle={{ color: COLORS.red }}
           />
         </View>
@@ -187,12 +164,12 @@ const StockDetail = ({
         >
           <Overview
             label="Volume"
-            price="52,58,130"
+            price={stockData.volume.toFixed(2)}
             containerStyle={{ color: COLORS.white }}
           />
           <Overview
-            label="Info"
-            price="Private Sector"
+            label="Sector"
+            price={stockData.sector}
             containerStyle={{ color: COLORS.white }}
           />
         </View>
@@ -202,61 +179,3 @@ const StockDetail = ({
 };
 
 export default StockDetail;
-
-// function mapStateToProps(state) {
-//   return {
-//     myHoldings: state.marketReducer.myHoldings,
-//     coins: state.marketReducer.coins,
-//   };
-// }
-
-// function mapDispatchToProps(dispatch) {
-//   return {
-//     getHoldings: (
-//       holdings,
-//       currency,
-//       coinList,
-//       orderBy,
-//       sparkline,
-//       priceChangePerc,
-//       perPage,
-//       page
-//     ) => {
-//       return dispatch(
-//         getHoldings(
-//           holdings,
-//           currency,
-//           coinList,
-//           orderBy,
-//           sparkline,
-//           priceChangePerc,
-//           perPage,
-//           page
-//         )
-//       );
-//     },
-
-//     getCoinMarket: (
-//       currency,
-//       coinList,
-//       orderBy,
-//       sparkline,
-//       priceChangePerc,
-//       perPage,
-//       page
-//     ) => {
-//       return dispatch(
-//         getCoinMarket(
-//           currency,
-//           coinList,
-//           orderBy,
-//           sparkline,
-//           priceChangePerc,
-//           perPage,
-//           page
-//         )
-//       );
-//     },
-//   };
-// }
-// export default connect(mapStateToProps, mapDispatchToProps)(StockDetail);

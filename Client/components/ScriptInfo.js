@@ -1,10 +1,10 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 import React from "react";
-import { SIZES, FONTS, COLORS } from "../constants";
+import { SIZES, FONTS, COLORS, icons } from "../constants";
 
 const ScriptInfo = (props) => {
-  //console.log("Data Props", props);
   const { item } = props;
+
   return (
     <View
       style={{
@@ -16,8 +16,6 @@ const ScriptInfo = (props) => {
         justifyContent: "center",
         height: 80,
         width: 150,
-        // borderRightWidth: 3,
-        // borderColor: COLORS.white,
         backgroundColor: COLORS.black,
         marginHorizontal: SIZES.radius,
       }}
@@ -40,10 +38,12 @@ const ScriptInfo = (props) => {
         >
           {item.value}
         </Text>
+
         <Text
           style={{
-            ...FONTS.h2,
-            color: "#006400",
+            color: COLORS.lightGreen,
+            lineHeight: 15,
+            ...FONTS.h3,
             textAlign: "center",
           }}
         >

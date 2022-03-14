@@ -15,7 +15,8 @@ const NewsContainer = (props) => {
         borderRadius: SIZES.radius,
         backgroundColor: COLORS.gray,
         flex: 1,
-        height: 90,
+        height: "100%",
+        width: "100%",
         marginRight: SIZES.radius,
       }}
       // onPress={() => console.log("press")}
@@ -24,45 +25,49 @@ const NewsContainer = (props) => {
       <View
         style={{
           flexDirection: "row",
-          marginRight: 200,
+          marginRight: 100,
           marginLeft: 20,
+          marginTop: 10,
         }}
       >
         <Image
-          source={item.icon}
+          // source={{ uri: "https://picsum.photos/200" }}
+          source={icons.newsImage}
           style={{
             height: 60,
             width: 60,
             borderRadius: 50,
+            top: 8,
           }}
         />
 
         <Text
           style={{
-            ...FONTS.h2,
+            fontSize: 18,
             fontWeight: "bold",
             color: "white",
-            textAlign: "center",
-            marginLeft: 20,
+
+            marginLeft: 11,
           }}
         >
-          {item.companyName}
+          {item.title}
         </Text>
       </View>
       <View
         style={{
           flexDirection: "row",
-          marginLeft: 80,
-          marginTop: -50,
+          marginLeft: 90,
         }}
       >
         <Text
           style={{
-            ...FONTS.body3,
-            fontWeight: "bold",
+            fontSize: 15,
+            // fontWeight: "bold",
             color: "white",
-            textAlign: "center",
-            marginLeft: 20,
+            textAlign: "justify",
+            marginLeft: 3,
+            marginRight: 20,
+            marginTop: -28,
           }}
         >
           {item.content}
