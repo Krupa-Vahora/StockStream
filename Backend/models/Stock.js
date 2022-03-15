@@ -22,6 +22,10 @@ const Stock = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    percentage: {
+      type: Number,
+      required: true,
+    },
     company: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,

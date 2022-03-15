@@ -15,7 +15,6 @@ const company = new mongoose.Schema({
   },
   icon: {
     type: Object,
-    required: true,
   },
 });
 

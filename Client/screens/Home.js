@@ -220,7 +220,7 @@ const Home = ({ coins, navigation }) => {
             paddingHorizontal: SIZES.padding,
           }}
           renderItem={({ item }) => {
-            console.log("id", item.id);
+            // console.log("id", item.id);
             let priceColor =
               item.percentage == 0
                 ? COLORS.lightGray3

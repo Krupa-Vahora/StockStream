@@ -1,5 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,7 +9,9 @@ import {
   Switch,
 } from "react-native";
 import { MainLayout } from ".";
-// import { Headerbar } from "../components";
+
+import * as userAction from "../store/user/userAction";
+import { useSelector, useDispatch } from "react-redux";
 import { COLORS, FONTS, SIZES, dummyData, icons } from "../constants";
 
 const SectionTitle = ({ title }) => {
@@ -165,14 +167,6 @@ const Profile = ({ navigation }) => {
               >
                 {dummyData.profile.email}
               </Text>
-              <Text
-                style={{
-                  color: COLORS.lightGray3,
-                  ...FONTS.body4,
-                }}
-              >
-                ID:{dummyData.profile.id}
-              </Text>
             </View>
             {/* status */}
             <View
@@ -210,25 +204,6 @@ const Profile = ({ navigation }) => {
             onPress={() => navigation.navigate("Home")}
           />
 
-          <Setting
-            title="Appearance"
-            value="Dark"
-            type="button"
-            onPress={() => console.log("PRESSED")}
-          />
-          <SectionTitle title="Account" />
-          <Setting
-            title="Payment Currency"
-            value="Rs"
-            type="button"
-            onPress={() => console.log("PRESSED")}
-          />
-          <Setting
-            title="Language"
-            value="English"
-            type="button"
-            onPress={() => console.log("PRESSED")}
-          />
           <SectionTitle title="Security" />
           <Setting
             title="FaceID"

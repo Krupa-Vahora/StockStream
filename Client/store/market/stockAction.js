@@ -8,7 +8,7 @@ export const getStock = () => {
     try {
       const response = await axios.get(`${baseUrl}/company/all`);
       const resData = await response.data;
-      // console.log("actionStock", resData);
+
       dispatch({ type: GET_STOCK_DATA, stock: resData });
     } catch (err) {
       throw err;

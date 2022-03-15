@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, Text, TouchableOpacity, Image, Button } from "react-native";
 
 import { MainLayout } from ".";
@@ -151,7 +151,7 @@ const StockDetail = (props) => {
           />
           <Overview
             label="Low"
-            price={stockData.low}
+            price={stockData.low.toFixed(2)}
             containerStyle={{ color: COLORS.red }}
           />
         </View>

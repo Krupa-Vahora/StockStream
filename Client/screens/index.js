@@ -7,6 +7,8 @@ import AddPortfolio from "./AddPortfolio";
 import AddWatchList from "./AddWatchList";
 import News from "./News";
 import StockDetail from "./StockDetail";
+import Signup from "./Signup";
+import SignIn from "./SignIn";
 
 export {
   Home,
@@ -18,4 +20,6 @@ export {
   AddWatchList,
   News,
   StockDetail,
+  Signup,
+  SignIn,
 };

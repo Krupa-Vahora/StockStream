@@ -70,7 +70,8 @@ const Portfolio = ({ getHoldings, myHoldings, navigation }) => {
           height: 50,
           alignItems: "center",
         }}
-        onPress={() => navigation.navigate("AddPortfolio")}
+        // onPress={() => navigation.navigate("AddPortfolio")}
+        onPress={() => navigation.navigate("SignIn")}
       >
         <Text
           style={{

@@ -10,6 +10,7 @@ mongoose.connect(url, { useNewUrlParser: true });
 const companyRoute = require("./routes/companyRoute");
 const stockRoute = require("./routes/stockRoute");
 const newsRoute = require("./routes/newsRoute");
+const userRoute = require("./routes/userRoute");
 
 const con = mongoose.connection;
 con.on("open", () => {
@@ -19,9 +20,13 @@ con.on("open", () => {
 app.use(express.json());
 
 //route
+app.get("/", (req, res) => {
+  res.send("Hello");
+});
 app.use("/company", companyRoute);
 app.use("/stock", stockRoute);
 app.use("/news", newsRoute);
+app.use("/user", userRoute);
 
 app.listen(3000, () => {
   console.log("Server Started");
