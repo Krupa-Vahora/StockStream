@@ -28,7 +28,7 @@ const App = () => {
           screenOptions={{
             headerShown: false,
           }}
-          initialRouteName={"MainLayout"}
+          initialRouteName={"Home"}
         >
           <Stack.Screen name="MainLayout" component={Tabs} />
           <Stack.Screen name="AddPortfolio" component={AddPortfolio} />

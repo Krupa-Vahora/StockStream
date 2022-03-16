@@ -1,14 +1,33 @@
 import React from "react";
-import { View, Text, TouchableOpacity, Image, Button } from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 
 import { MainLayout } from ".";
 
 import { COLORS, FONTS, SIZES, icons } from "../constants";
 import { IconTextButton, StockDetailInfo } from "../components";
 import Overview from "../components/Overview";
+import { useDispatch } from "react-redux";
+import * as portfolioAction from "../store/portfolio/portfolioAction";
+
 const StockDetail = (props) => {
   const { navigation, route } = props;
   const stockData = route.params.stock;
+  const dispatch = useDispatch();
+  const submitPortfolio = async () => {
+    const data = {
+      companyName: stockData.companyName,
+      price: stockData.price,
+      percentage: stockData.percentage,
+    };
+    console.log("data", data);
+
+    const res = await dispatch(portfolioAction.sendPort(data));
+    console.log("response", res);
+    if (res.type == "SEND_PORT_DATA") {
+      navigation.navigate("Portfolio");
+    }
+  };
+
   const BackHome = () => {
     return (
       <TouchableOpacity
@@ -70,25 +89,33 @@ const StockDetail = (props) => {
             marginTop: 20,
             marginBottom: -15,
             paddingHorizontal: SIZES.radius,
+            marginLeft: 20,
           }}
         >
           <IconTextButton
-            label="Transfer"
-            icon={icons.send}
+            label="Portfolio"
             containerStyle={{
               flex: 1,
               height: 40,
               marginRight: SIZES.radius,
             }}
-            onPress={() => console.log("transfer")}
+            onPress={() => submitPortfolio()}
           />
-
           <IconTextButton
-            label="Withdraw"
-            icon={icons.withdraw}
+            label="Transfer"
             containerStyle={{
               flex: 1,
               height: 40,
+              marginRight: SIZES.radius,
+            }}
+            onPress={() => console.log("Transfer")}
+          />
+          <IconTextButton
+            label="Withdraw"
+            containerStyle={{
+              flex: 1,
+              height: 40,
+
               marginRight: SIZES.radius,
             }}
             onPress={() => console.log("withdraw")}

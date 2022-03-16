@@ -1,32 +1,33 @@
 import React from "react";
 import { Text, Image, TouchableOpacity } from "react-native";
 import { COLORS, FONTS, SIZES } from "../constants";
-const IconTextButton = ({ label, icon, containerStyle, onPress }) => {
+const IconTextButton = ({ label, containerStyle, onPress }) => {
   return (
     <TouchableOpacity
       style={{
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-        height: 50,
+        height: 60,
         borderRadius: SIZES.radius,
         backgroundColor: COLORS.white,
         ...containerStyle,
       }}
       onPress={onPress}
     >
-      <Image
+      {/* <Image
         source={icon}
         resizeMode="contain"
         style={{
-          width: 20,
+          width: 18,
           height: 20,
         }}
-      />
+      /> */}
 
       <Text
         style={{
-          marginLeft: SIZES.base,
+          // marginLeft: SIZES.base,
+          textAlign: "center",
           ...FONTS.h3,
         }}
       >

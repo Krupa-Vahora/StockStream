@@ -4,6 +4,7 @@ import marketReducer from "./market/marketReducer";
 import newsReducer from "./news/newsReducer";
 import stockReducer from "./market/stockReducer";
 import userReducer from "./user/userReducer";
+import portfolioReducer from "./portfolio/portfolioReducer";
 
 export default combineReducers({
   tabReducer,
@@ -11,4 +12,5 @@ export default combineReducers({
   news: newsReducer,
   stock: stockReducer,
   user: userReducer,
+  portfolio: portfolioReducer,
 });

@@ -20,6 +20,7 @@ const avatar = require("../assets/images/avatar.png");
 const avatar1 = require("../assets/images/avatar1.png");
 const newsImage = require("../assets/images/news.jpeg");
 const logo = require("../assets/images/logo.jpeg");
+const remove = require("../assets/images/remove.webp");
 
 export default {
   briefcase,
@@ -44,4 +45,5 @@ export default {
   avatar1,
   newsImage,
   logo,
+  remove,
 };

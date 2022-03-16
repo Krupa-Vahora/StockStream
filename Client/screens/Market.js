@@ -15,7 +15,7 @@ import {
 } from "react-native";
 
 import { connect, useDispatch, useSelector } from "react-redux";
-import { LineChart } from "react-native-chart-kit";
+
 import { getCoinMarket } from "../store/market/marketAction";
 import { MainLayout } from ".";
 import { COLORS, FONTS, SIZES, icons, constants } from "../constants";

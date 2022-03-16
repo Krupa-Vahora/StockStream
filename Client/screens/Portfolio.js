@@ -1,31 +1,34 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, FlatList, Image } from "react-native";
-import { connect } from "react-redux";
-import { useFocusEffect } from "@react-navigation/native";
-import { getHoldings } from "../store/market/marketAction";
+import React, { useEffect } from "react";
+import { View, Text, TouchableOpacity, Image, FlatList } from "react-native";
 
 import { MainLayout } from ".";
-import { BalanceInfo, Chart } from "../components";
-import { COLORS, FONTS, SIZES, dummyData, icons } from "../constants";
+import { BalanceInfo } from "../components";
+import { COLORS, FONTS, SIZES, icons } from "../constants";
+import { useSelector, useDispatch } from "react-redux";
+import * as portfolioAction from "../store/portfolio/portfolioAction";
 
-const Portfolio = ({ getHoldings, myHoldings, navigation }) => {
-  const [selectedCoin, setSelectedCoin] = useState(null);
+const Portfolio = (props) => {
+  const { navigation, route } = props;
 
-  useFocusEffect(
-    React.useCallback(() => {
-      getHoldings((holdings = dummyData.holdings));
-    }, [])
-  );
+  // const stockInfo = route.params.stock;
+  // console.log("portfolio data from param==>", stockInfo);
 
-  let totalWallet = myHoldings.reduce((a, b) => a + (b.total || 0), 0);
+  const portfolio = useSelector((state) => state.portfolio.getportfolio);
+  console.log("portfolio", portfolio);
 
-  let valueChange = myHoldings.reduce(
-    (a, b) => a + (b.holdings_value_change_7d || 0),
-    0
-  );
+  const dispatch = useDispatch();
 
-  let percChange = (valueChange / (totalWallet - valueChange)) * 100;
-  // console.log(percChange);
+  useEffect(() => {
+    dispatch(portfolioAction.getPort());
+  }, []);
+
+  const totalWallet = 0;
+  const percChange = 0;
+
+  function deleteData(id) {
+    dispatch(portfolioAction.deletePort(id));
+    dispatch(portfolioAction.getPort());
+  }
 
   function renderCurrentBalanceSection() {
     return (
@@ -37,15 +40,35 @@ const Portfolio = ({ getHoldings, myHoldings, navigation }) => {
           backgroundColor: COLORS.gray,
         }}
       >
-        <Text
-          style={{
-            marginTop: 60,
-            color: COLORS.white,
-            ...FONTS.largeTitle,
-          }}
-        >
-          Portfolio
-        </Text>
+        <View>
+          <TouchableOpacity
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+            onPress={() => navigation.navigate("Home")}
+          >
+            <Image
+              source={icons.leftArrow}
+              style={{
+                height: 25,
+                width: 25,
+                tintColor: COLORS.white,
+                marginTop: 50,
+              }}
+            />
+            <Text
+              style={{
+                marginTop: 50,
+                marginLeft: 10,
+                color: COLORS.white,
+                ...FONTS.largeTitle,
+              }}
+            >
+              Portfolio
+            </Text>
+          </TouchableOpacity>
+        </View>
         <AddPortfolio value="Add New Stock" type="button" />
 
         <BalanceInfo
@@ -54,8 +77,8 @@ const Portfolio = ({ getHoldings, myHoldings, navigation }) => {
           changePct={percChange}
           containerStyle={{
             marginTop: SIZES.radiusTop,
-            // marginTop: -40,
             marginBottom: SIZES.padding,
+            marginLeft: 25,
           }}
         />
       </View>
@@ -71,7 +94,7 @@ const Portfolio = ({ getHoldings, myHoldings, navigation }) => {
           alignItems: "center",
         }}
         // onPress={() => navigation.navigate("AddPortfolio")}
-        onPress={() => navigation.navigate("SignIn")}
+        // onPress={() => navigation.navigate("SignIn")}
       >
         <Text
           style={{
@@ -94,6 +117,7 @@ const Portfolio = ({ getHoldings, myHoldings, navigation }) => {
       </TouchableOpacity>
     );
   };
+
   return (
     <MainLayout>
       <View
@@ -104,125 +128,68 @@ const Portfolio = ({ getHoldings, myHoldings, navigation }) => {
       >
         {/* header section-current balance */}
         {renderCurrentBalanceSection()}
-        {/* chart  */}
-        <Chart
-          containerStyle={{
-            marginTop: SIZES.radius,
-          }}
-          chartPrices={
-            selectedCoin
-              ? selectedCoin?.sparkline_in_7d.value
-              : myHoldings[0]?.sparkline_in_7d.value
-          }
-        />
-        {/* your assets</View> */}
-        <FlatList
-          data={myHoldings}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={{
-            marginTop: SIZES.padding,
-            paddingHorizontal: SIZES.padding,
-          }}
-          ListHeaderComponent={
-            <View>
-              {/* section title  */}
-              <Text
-                style={{
-                  ...FONTS.h2,
-                  color: COLORS.white,
-                }}
-              >
-                Your Assets
-              </Text>
-              {/* header label  */}
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginTop: SIZES.radius,
-                }}
-              >
-                <Text style={{ flex: 1, color: COLORS.lightGray3 }}>Asset</Text>
-                <Text
-                  style={{
-                    flex: 1,
-                    color: COLORS.lightGray3,
-                    textAlign: "right",
-                  }}
-                >
-                  Price
-                </Text>
 
-                <Text
-                  style={{
-                    flex: 1,
-                    color: COLORS.lightGray3,
-                    textAlign: "right",
-                  }}
-                >
-                  Holdings
-                </Text>
-              </View>
-            </View>
-          }
+        {/* your assets */}
+        <Text
+          style={{
+            color: COLORS.white,
+            ...FONTS.h2,
+            textAlign: "center",
+            marginTop: 20,
+          }}
+        >
+          Your Assets
+        </Text>
+        <FlatList
+          data={portfolio}
+          keyExtractor={(item) => item._id}
           renderItem={({ item }) => {
             let priceColor =
-              item.price_change_percentage_7d_in_currency == 0
+              item.percentage == 0
                 ? COLORS.lightGray3
-                : item.price_change_percentage_7d_in_currency > 0
+                : item.percentage > 0
                 ? COLORS.lightGreen
                 : COLORS.red;
             return (
-              <TouchableOpacity
+              <View
                 style={{
                   flexDirection: "row",
-                  height: 55,
+                  marginTop: 30,
                 }}
-                onPress={() => setSelectedCoin(item)}
               >
-                {/* asset  */}
                 <View
                   style={{
                     flex: 1,
-                    flexDirection: "row",
-                    alignItems: "center",
+                    marginLeft: 20,
+                    marginTop: 10,
                   }}
                 >
-                  <Image
-                    source={{ uri: item.image }}
-                    style={{
-                      width: 20,
-                      height: 20,
-                    }}
-                  />
+                  {/* companyName */}
                   <Text
                     style={{
                       marginLeft: SIZES.radius,
                       color: COLORS.white,
-                      ...FONTS.h4,
+                      ...FONTS.h3,
                     }}
                   >
-                    {item.name}
+                    {item.companyName}
                   </Text>
                 </View>
-                {/* price  */}
                 <View
                   style={{
-                    flex: 1,
-                    justifyContent: "center",
+                    marginRight: 20,
                   }}
                 >
-                  {/* current price  */}
                   <Text
                     style={{
-                      textAlign: "right",
+                      textAlign: "center",
                       color: COLORS.white,
                       ...FONTS.h4,
-                      lineHeight: 15,
+                      // marginLeft: 10,
                     }}
                   >
-                    ${item.current_price.toLocaleString()}
+                    {parseFloat(item?.price).toFixed(2) ?? 0.0}
                   </Text>
-                  {/* percentage  */}
                   <View
                     style={{
                       flexDirection: "row",
@@ -230,7 +197,7 @@ const Portfolio = ({ getHoldings, myHoldings, navigation }) => {
                       justifyContent: "flex-end",
                     }}
                   >
-                    {item.price_change_percentage_7d_in_currency != 0 && (
+                    {item.percentage != 0 && (
                       <Image
                         source={icons.upArrow}
                         style={{
@@ -238,12 +205,13 @@ const Portfolio = ({ getHoldings, myHoldings, navigation }) => {
                           width: 10,
                           tintColor: priceColor,
                           transform:
-                            item.price_change_percentage_7d_in_currency > 0
+                            item.percentage > 0
                               ? [{ rotate: "45deg" }]
                               : [{ rotate: "125deg" }],
                         }}
                       />
                     )}
+
                     <Text
                       style={{
                         marginLeft: 5,
@@ -252,40 +220,25 @@ const Portfolio = ({ getHoldings, myHoldings, navigation }) => {
                         lineHeight: 15,
                       }}
                     >
-                      {item.price_change_percentage_7d_in_currency.toFixed(2)}%
+                      {item?.percentage}%
                     </Text>
                   </View>
                 </View>
-                {/* holding */}
-                <View
+                <TouchableOpacity
                   style={{
-                    flex: 1,
-                    justifyContent: "center",
+                    marginTop: 12,
                   }}
+                  onPress={() => deleteData(item._id)}
                 >
-                  <Text
+                  <Image
+                    source={icons.remove}
                     style={{
-                      textAlign: "right",
-                      color: COLORS.white,
-                      ...FONTS.h4,
-                      lineHeight: 15,
+                      height: 20,
+                      width: 20,
                     }}
-                  >
-                    ${item.total.toLocaleString()}
-                  </Text>
-                  <Text
-                    style={{
-                      textAlign: "right",
-                      color: COLORS.lightGray3,
-                      ...FONTS.body5,
-                      lineHeight: 15,
-                    }}
-                  >
-                    {item.qty}
-                    {item.symbol.toUpperCase()}
-                  </Text>
-                </View>
-              </TouchableOpacity>
+                  />
+                </TouchableOpacity>
+              </View>
             );
           }}
         />
@@ -294,39 +247,4 @@ const Portfolio = ({ getHoldings, myHoldings, navigation }) => {
   );
 };
 
-// export default Portfolio;
-function mapStateToProps(state) {
-  return {
-    myHoldings: state.marketReducer.myHoldings,
-    // coins: state.marketReducer.coins,
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    getHoldings: (
-      holdings,
-      currency,
-      coinList,
-      orderBy,
-      sparkline,
-      priceChangePerc,
-      perPage,
-      page
-    ) => {
-      return dispatch(
-        getHoldings(
-          holdings,
-          currency,
-          coinList,
-          orderBy,
-          sparkline,
-          priceChangePerc,
-          perPage,
-          page
-        )
-      );
-    },
-  };
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Portfolio);
+export default Portfolio;

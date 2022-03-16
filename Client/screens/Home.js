@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, FlatList, Image } from "react-native";
 import { MainLayout } from ".";
-import { connect, useDispatch, useSelector } from "react-redux";
-import { getCoinMarket, getHoldings } from "../store/market/marketAction";
+import { useDispatch, useSelector } from "react-redux";
 
-import { COLORS, FONTS, SIZES, dummyData, icons } from "../constants";
+import { COLORS, FONTS, SIZES, icons } from "../constants";
 
 import * as stockAction from "../store/market/stockAction";
-import { WatchListButton, Chart, ScriptInfo } from "../components";
-import { param } from "express/lib/request";
+import { WatchListButton, ScriptInfo } from "../components";
 
 const SCRIPT_DATA = [
   {
