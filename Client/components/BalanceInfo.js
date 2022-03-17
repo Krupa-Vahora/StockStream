@@ -14,14 +14,6 @@ const BalanceInfo = ({ title, displayAmount, changePct, containerStyle }) => {
         }}
       >
         <Text
-          style={{
-            ...FONTS.h3,
-            color: COLORS.lightGray3,
-          }}
-        >
-          $
-        </Text>
-        <Text
           style={{ marginLeft: SIZES.base, ...FONTS.h2, color: COLORS.white }}
         >
           {displayAmount.toLocaleString()}
@@ -30,13 +22,14 @@ const BalanceInfo = ({ title, displayAmount, changePct, containerStyle }) => {
           style={{
             color: COLORS.lightGray3,
             ...FONTS.h3,
+            marginLeft: 10,
           }}
         >
-          USD
+          Rs.
         </Text>
       </View>
       {/* change percentage  */}
-      <View
+      {/* <View
         style={{
           flexDirection: "row",
           alignItems: "flex-end",
@@ -71,7 +64,7 @@ const BalanceInfo = ({ title, displayAmount, changePct, containerStyle }) => {
           {changePct.toFixed(2)}%
         </Text>
 
-        <Text
+        {/* <Text
           style={{
             marginLeft: SIZES.radius,
             alignSelf: "flex-end",
@@ -80,8 +73,8 @@ const BalanceInfo = ({ title, displayAmount, changePct, containerStyle }) => {
           }}
         >
           7d change
-        </Text>
-      </View>
+        </Text> */}
+      {/* </View>  */}
     </View>
   );
 };

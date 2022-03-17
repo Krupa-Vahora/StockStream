@@ -9,7 +9,7 @@ export const getPort = () => {
     try {
       const response = await axios.get(`${baseUrl}/portfolio/allPortStock`);
       const resData = await response.data;
-      console.log("Action", resData);
+
       dispatch({ type: GET_PORT_DATA, portfolio: resData });
     } catch (err) {
       throw err;
@@ -19,7 +19,6 @@ export const getPort = () => {
 
 export const sendPort = (data) => {
   return async (dispatch) => {
-    console.log(" actiondata", data);
     try {
       const response = await axios.post(`${baseUrl}/portfolio/new`, data);
       const resData = await response.data;
@@ -32,7 +31,6 @@ export const sendPort = (data) => {
 };
 
 export const deletePort = (id) => {
-  console.log("id", id);
   return async (dispatch) => {
     try {
       const response = await axios.delete(`${baseUrl}/portfolio/delete/${id}`);

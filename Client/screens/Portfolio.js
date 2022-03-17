@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, Image, FlatList } from "react-native";
 
 import { MainLayout } from ".";
@@ -9,6 +9,7 @@ import * as portfolioAction from "../store/portfolio/portfolioAction";
 
 const Portfolio = (props) => {
   const { navigation, route } = props;
+  const [newcount, setcount] = useState("");
 
   // const stockInfo = route.params.stock;
   // console.log("portfolio data from param==>", stockInfo);
@@ -16,14 +17,21 @@ const Portfolio = (props) => {
   const portfolio = useSelector((state) => state.portfolio.getportfolio);
   console.log("portfolio", portfolio);
 
-  const dispatch = useDispatch();
+  useEffect(() => {
+    let count = 0;
+    portfolio?.map((data) => {
+      count = count + data?.price;
+    });
+    setcount(count);
+    console.log("total", count);
+  }, [portfolio]);
 
+  const dispatch = useDispatch();
   useEffect(() => {
     dispatch(portfolioAction.getPort());
   }, []);
 
-  const totalWallet = 0;
-  const percChange = 0;
+  const totalWallet = newcount;
 
   function deleteData(id) {
     dispatch(portfolioAction.deletePort(id));
@@ -74,7 +82,6 @@ const Portfolio = (props) => {
         <BalanceInfo
           title="Current Balance"
           displayAmount={totalWallet}
-          changePct={percChange}
           containerStyle={{
             marginTop: SIZES.radiusTop,
             marginBottom: SIZES.padding,
