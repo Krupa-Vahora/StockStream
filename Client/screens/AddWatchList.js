@@ -11,8 +11,13 @@ import React, { useEffect, useState } from "react";
 import { COLORS, FONTS, SIZES, icons } from "../constants";
 import * as stockAction from "../store/market/stockAction";
 import { connect, useDispatch, useSelector } from "react-redux";
+import { TextInput } from "react-native-gesture-handler";
 const AddWatchList = ({ navigation }) => {
   const [stockData, setStockData] = useState([]);
+  const [filterData, setFilterData] = useState([]);
+  const [masterData, setMasterData] = useState([]);
+  const [search, setSearch] = useState("");
+
   const stock = useSelector((state) => state.stock.stocks);
   const stockInfo = useSelector((state) => state.stock.stockInfo);
 
@@ -33,8 +38,30 @@ const AddWatchList = ({ navigation }) => {
       }
       // console.log("NewDataa on watchlist", item, stockInfo);
       setStockData({ ...stockData, item });
+
+      setFilterData(stock);
+      setMasterData(stock);
+      console.log("state", setFilterData);
     });
   }, [stock]);
+
+  const searchFilter = (text) => {
+    if (text) {
+      const newData = masterData.filter((item) => {
+        const itemData = item.companyName
+          ? item.companyName.toUpperCase()
+          : "".toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      setFilterData(newData);
+      setSearch(text);
+    } else {
+      setFilterData(masterData);
+      setSearch(text);
+    }
+  };
+
   return (
     <View
       style={{
@@ -45,7 +72,7 @@ const AddWatchList = ({ navigation }) => {
       <Text
         style={{
           marginTop: 80,
-          marginLeft: 10,
+
           color: COLORS.white,
           ...FONTS.h1,
           textAlign: "center",
@@ -55,8 +82,28 @@ const AddWatchList = ({ navigation }) => {
       </Text>
 
       <View style={{ flex: 0.8, width: SIZES.width, marginTop: 60 }}>
+        <TextInput
+          style={{
+            backgroundColor: COLORS.lightGray,
+            borderRadius: 20,
+            height: 40,
+            width: "87%",
+            marginTop: -20,
+            paddingLeft: 20,
+            marginLeft: 20,
+            textAlign: "left",
+            color: COLORS.white,
+            ...FONTS.body3,
+            fontWeight: "bold",
+          }}
+          value={search}
+          placeholder="Search Here"
+          placeholderTextColor="white"
+          onChangeText={(text) => searchFilter(text)}
+        />
+
         <FlatList
-          data={stock}
+          data={filterData}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => {
             console.log("FlatList Data-market tab", item);
