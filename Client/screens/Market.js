@@ -154,21 +154,6 @@ const Market = ({ getCoinMarket, coins, navigation }) => {
     });
   }, [stock]);
 
-  function renderTabBar() {
-    return (
-      <View
-        style={{
-          marginTop: SIZES.radius,
-          marginHorizontal: SIZES.radius,
-          borderRadius: SIZES.radius,
-          backgroundColor: COLORS.gray,
-        }}
-      >
-        <Tabs scrollX={scrollX} onMarketTabPress={onMarketTabPress} />
-      </View>
-    );
-  }
-
   function renderList() {
     return (
       <Animated.FlatList
@@ -428,8 +413,7 @@ const Market = ({ getCoinMarket, coins, navigation }) => {
       >
         {/* header */}
         <Headerbar title="Market" />
-        {/* tab bar  */}
-        {renderTabBar()}
+
         {/* buttons  */}
         {/* {renderButtons()} */}
         {/* market list  */}

@@ -124,9 +124,9 @@ const Profile = ({ navigation }) => {
           }}
         >
           <Image
-            source={icons.avatar}
+            source={icons.profile}
             style={{
-              marginTop: 20,
+              marginTop: 30,
               height: 150,
               width: 150,
               borderRadius: 100,

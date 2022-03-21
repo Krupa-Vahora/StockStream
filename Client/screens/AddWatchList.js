@@ -5,11 +5,13 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
+  Alert,
 } from "react-native";
 
 import React, { useEffect, useState } from "react";
 import { COLORS, FONTS, SIZES, icons } from "../constants";
 import * as stockAction from "../store/market/stockAction";
+import * as watchlistAction from "../store/watchlist/watchlistAction";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { TextInput } from "react-native-gesture-handler";
 const AddWatchList = ({ navigation }) => {
@@ -20,15 +22,18 @@ const AddWatchList = ({ navigation }) => {
 
   const stock = useSelector((state) => state.stock.stocks);
   const stockInfo = useSelector((state) => state.stock.stockInfo);
-
+  const watchlistInfo = useSelector((state) => state.watchlist.getwatchlist);
+  console.log("info", watchlistInfo);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(stockAction.getStock());
     dispatch(stockAction.getStockInfo());
+    dispatch(watchlistAction.getWatch());
   }, []);
   useEffect(() => {
     stock?.map((item, key) => {
       if (stockInfo?.length > 0) {
+        item.id = stockInfo[key]?._id ?? 0;
         item.price = stockInfo[key]?.price ?? 0;
         item.high = stockInfo[key]?.high ?? 0;
         item.low = stockInfo[key]?.low ?? 0;
@@ -41,9 +46,29 @@ const AddWatchList = ({ navigation }) => {
 
       setFilterData(stock);
       setMasterData(stock);
-      console.log("state", setFilterData);
     });
   }, [stock]);
+
+  const submitData = async (item) => {
+    const data = {
+      companyName: item.companyName,
+      price: item.price,
+      percentage: item.percentage,
+    };
+    console.log("data=>", data);
+
+    const res = await dispatch(watchlistAction.sendWatch(data));
+    dispatch(watchlistAction.getWatch());
+    Alert.alert("Stock Added to your watchlist");
+    // if (res.type == "SEND_WATCH_DATA") {
+    // navigation.popToTop();
+    // }
+  };
+  function deleteData(id) {
+    dispatch(watchlistAction.deleteWatch(id));
+    Alert.alert("Stock Remove to your watchlist");
+    dispatch(watchlistAction.getWatch());
+  }
 
   const searchFilter = (text) => {
     if (text) {
@@ -69,19 +94,28 @@ const AddWatchList = ({ navigation }) => {
         backgroundColor: COLORS.black,
       }}
     >
-      <Text
-        style={{
-          marginTop: 80,
-
-          color: COLORS.white,
-          ...FONTS.h1,
-          textAlign: "center",
-        }}
-      >
-        Update Your Watchlist
-      </Text>
-
-      <View style={{ flex: 0.8, width: SIZES.width, marginTop: 60 }}>
+      <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+        <Image
+          source={icons.leftArrow}
+          style={{
+            height: 25,
+            width: 25,
+            tintColor: COLORS.white,
+            marginTop: 70,
+          }}
+        />
+        <Text
+          style={{
+            marginTop: -30,
+            color: COLORS.white,
+            ...FONTS.h1,
+            textAlign: "center",
+          }}
+        >
+          Update Your Watchlist
+        </Text>
+      </TouchableOpacity>
+      <View style={{ flex: 0.4, width: SIZES.width, marginTop: 60 }}>
         <TextInput
           style={{
             backgroundColor: COLORS.lightGray,
@@ -106,7 +140,7 @@ const AddWatchList = ({ navigation }) => {
           data={filterData}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => {
-            console.log("FlatList Data-market tab", item);
+            // console.log("FlatList Data-market tab", item);
             let priceColor =
               item.percentage == 0
                 ? COLORS.lightGray3
@@ -114,95 +148,223 @@ const AddWatchList = ({ navigation }) => {
                 ? COLORS.lightGreen
                 : COLORS.red;
             return (
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("StockDetail", {
-                    stock: item,
-                  })
-                }
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginTop: 20,
+                }}
               >
                 <View
                   style={{
-                    flexDirection: "row",
-                    marginTop: 20,
+                    marginLeft: 20,
+                    flex: 1,
                   }}
                 >
-                  <View
+                  {/* companyName */}
+                  <Text
                     style={{
-                      marginLeft: 20,
-                      flex: 1,
+                      marginLeft: SIZES.radius,
+                      color: COLORS.white,
+                      ...FONTS.h3,
                     }}
                   >
-                    {/* companyName */}
+                    {item.companyName}
+                  </Text>
+                </View>
+
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: "flex-end",
+                    justifyContent: "center",
+                    marginRight: 80,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: COLORS.white,
+                      ...FONTS.h4,
+                    }}
+                  >
+                    {parseFloat(item?.price).toFixed(2) ?? 0.0}
+                  </Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                    }}
+                  >
+                    {item.percentage != 0 && (
+                      <Image
+                        source={icons.upArrow}
+                        style={{
+                          height: 10,
+                          width: 10,
+                          tintColor: priceColor,
+                          transform:
+                            item.percentage > 0
+                              ? [{ rotate: "45deg" }]
+                              : [{ rotate: "125deg" }],
+                        }}
+                      />
+                    )}
+
                     <Text
                       style={{
-                        marginLeft: SIZES.radius,
-                        color: COLORS.white,
-                        ...FONTS.h3,
+                        marginLeft: 5,
+                        color: priceColor,
+
+                        ...FONTS.body5,
+                        lineHeight: 15,
                       }}
                     >
-                      {item.companyName}
+                      {item?.percentage}%
                     </Text>
                   </View>
-
                   <View
                     style={{
                       flex: 1,
                       alignItems: "flex-end",
                       justifyContent: "center",
-                      marginRight: 40,
+                      marginRight: -50,
+                      marginTop: -25,
                     }}
                   >
-                    <Text
-                      style={{
-                        color: COLORS.white,
-                        ...FONTS.h4,
-                      }}
-                    >
-                      {parseFloat(item?.price).toFixed(2) ?? 0.0}
-                    </Text>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                      }}
-                    >
-                      {item.percentage != 0 && (
-                        <Image
-                          source={icons.upArrow}
-                          style={{
-                            height: 10,
-                            width: 10,
-                            tintColor: priceColor,
-                            transform:
-                              item.percentage > 0
-                                ? [{ rotate: "45deg" }]
-                                : [{ rotate: "125deg" }],
-                          }}
-                        />
-                      )}
-
+                    <TouchableOpacity onPress={() => submitData(item)}>
                       <Text
                         style={{
-                          marginLeft: 5,
-                          color: priceColor,
-
-                          ...FONTS.body5,
-                          lineHeight: 15,
+                          color: "#1F51FF",
                         }}
                       >
-                        {item?.percentage}%
+                        Add
                       </Text>
-                    </View>
+                    </TouchableOpacity>
                   </View>
                 </View>
-              </TouchableOpacity>
+              </View>
             );
           }}
         />
-        <Button
-          title="Add Watchlist"
-          onPress={() => navigation.navigate("Home")}
+      </View>
+      <View style={{ flex: 0.6, width: SIZES.width }}>
+        <Text
+          style={{
+            color: COLORS.white,
+            ...FONTS.h2,
+            marginTop: 30,
+            textAlign: "center",
+          }}
+        >
+          Your Watchlist
+        </Text>
+        <FlatList
+          data={watchlistInfo}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => {
+            console.log("watchlist data", item);
+            let priceColor =
+              item.percentage == 0
+                ? COLORS.lightGray3
+                : item.percentage > 0
+                ? COLORS.lightGreen
+                : COLORS.red;
+            return (
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginTop: 20,
+                }}
+              >
+                <View
+                  style={{
+                    marginLeft: 20,
+                    flex: 1,
+                  }}
+                >
+                  {/* companyName */}
+                  <Text
+                    style={{
+                      marginLeft: SIZES.radius,
+                      color: COLORS.white,
+                      ...FONTS.h3,
+                    }}
+                  >
+                    {item.companyName}
+                  </Text>
+                </View>
+
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: "flex-end",
+                    justifyContent: "center",
+                    marginRight: 80,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: COLORS.white,
+                      ...FONTS.h4,
+                    }}
+                  >
+                    {parseFloat(item?.price).toFixed(2) ?? 0.0}
+                  </Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                    }}
+                  >
+                    {item.percentage != 0 && (
+                      <Image
+                        source={icons.upArrow}
+                        style={{
+                          height: 10,
+                          width: 10,
+                          tintColor: priceColor,
+                          transform:
+                            item.percentage > 0
+                              ? [{ rotate: "45deg" }]
+                              : [{ rotate: "125deg" }],
+                        }}
+                      />
+                    )}
+
+                    <Text
+                      style={{
+                        marginLeft: 5,
+                        color: priceColor,
+
+                        ...FONTS.body5,
+                        lineHeight: 15,
+                      }}
+                    >
+                      {item?.percentage}%
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flex: 1,
+                      alignItems: "flex-end",
+                      justifyContent: "center",
+                      marginRight: -50,
+                      marginTop: -25,
+                    }}
+                  >
+                    <TouchableOpacity onPress={() => deleteData(item._id)}>
+                      <Image
+                        source={icons.remove}
+                        style={{
+                          height: 20,
+                          width: 20,
+                        }}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            );
+          }}
         />
       </View>
     </View>

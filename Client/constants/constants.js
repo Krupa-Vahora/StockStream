@@ -3,10 +3,6 @@ const marketTabs = [
     id: 1,
     title: "Stocks",
   },
-  {
-    id: 2,
-    title: "CryptoAssets",
-  },
 ];
 
 //API

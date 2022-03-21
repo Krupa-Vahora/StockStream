@@ -7,6 +7,7 @@ import { COLORS, FONTS, SIZES, icons } from "../constants";
 
 import * as stockAction from "../store/market/stockAction";
 import { WatchListButton, ScriptInfo } from "../components";
+import * as watchlistAction from "../store/watchlist/watchlistAction";
 
 const SCRIPT_DATA = [
   {
@@ -21,28 +22,19 @@ const SCRIPT_DATA = [
   },
 ];
 
-const Watchlist = [
-  {
-    label: "Wipro",
-  },
-  {
-    label: "Reliance",
-  },
-  {
-    label: "TCS",
-  },
-];
-
 const Home = ({ coins, navigation }) => {
   const [selectedCoin, setSelectedCoin] = useState(null);
 
   const stock = useSelector((state) => state.stock.stocks);
   const stockInfo = useSelector((state) => state.stock.stockInfo);
+  const watchlistInfo = useSelector((state) => state.watchlist.getwatchlist);
+  // console.log("watch", watchlistInfo);
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(stockAction.getStock());
     dispatch(stockAction.getStockInfo());
+    dispatch(watchlistAction.getWatch());
   }, []);
   useEffect(() => {
     stock?.map((item, key) => {
@@ -65,6 +57,17 @@ const Home = ({ coins, navigation }) => {
         style={{
           marginTop: 20,
           height: 110,
+          width: 1,
+          backgroundColor: "white",
+        }}
+      />
+    );
+  };
+  const ItemDividerWatch = () => {
+    return (
+      <View
+        style={{
+          height: 80,
           width: 1,
           backgroundColor: "white",
         }}
@@ -99,40 +102,6 @@ const Home = ({ coins, navigation }) => {
     );
   }
 
-  const AddWatch = ({ value, type }) => {
-    return (
-      <TouchableOpacity
-        style={{
-          flexDirection: "row",
-          height: 50,
-          alignItems: "center",
-        }}
-        onPress={() => navigation.navigate("AddWatchList")}
-      >
-        <Text
-          style={{
-            flex: 1,
-            color: COLORS.white,
-            ...FONTS.h3,
-            textAlign: "right",
-            marginTop: -80,
-          }}
-        >
-          {value}
-        </Text>
-        <Image
-          source={icons.rightArrow}
-          style={{
-            height: 15,
-            width: 15,
-            tintColor: COLORS.white,
-            marginTop: -80,
-          }}
-        />
-      </TouchableOpacity>
-    );
-  };
-
   return (
     <MainLayout>
       <View
@@ -143,21 +112,11 @@ const Home = ({ coins, navigation }) => {
       >
         {/* Header  */}
         {renderScriptInfoSection()}
-        {/* Chart  */}
-        {/* <Chart
-          containerStyle={{
-            marginTop: SIZES.padding,
-          }}
-          chartPrices={
-            selectedCoin
-              ? selectedCoin?.sparkline_in_7d.price
-              : coins[0]?.sparkline_in_7d.price
-          }
-        /> */}
+
         {/* watchlist */}
         <View
           style={{
-            marginTop: 30,
+            marginTop: 40,
             marginLeft: 10,
           }}
         >
@@ -171,12 +130,41 @@ const Home = ({ coins, navigation }) => {
           >
             My Watchlist
           </Text>
-          <AddWatch value="Add Watchlist" type="button" />
+          <TouchableOpacity
+            style={{
+              flexDirection: "row",
+              height: 50,
+              alignItems: "center",
+            }}
+            onPress={() => navigation.navigate("AddWatchList")}
+          >
+            <Text
+              style={{
+                flex: 1,
+                color: COLORS.white,
+                ...FONTS.h3,
+                textAlign: "right",
+                marginTop: -80,
+              }}
+            >
+              Add Watchlist
+            </Text>
+            <Image
+              source={icons.rightArrow}
+              style={{
+                height: 15,
+                width: 15,
+                tintColor: COLORS.white,
+                marginTop: -80,
+              }}
+            />
+          </TouchableOpacity>
 
           {/* Add Watch List */}
           <View
             style={{
               flexDirection: "row",
+
               marginTop: -20,
             }}
           >
@@ -185,16 +173,68 @@ const Home = ({ coins, navigation }) => {
                 justifyContent: "center",
               }}
               horizontal={true}
-              data={Watchlist}
+              data={watchlistInfo}
               renderItem={({ item }) => {
+                let priceColor =
+                  item.percentage == 0
+                    ? COLORS.lightGray3
+                    : item.percentage > 0
+                    ? COLORS.lightGreen
+                    : COLORS.red;
                 return (
-                  <WatchListButton
-                    item={item}
-                    onPress={() => console.log("watchlist")}
-                  />
+                  <View
+                    style={{
+                      marginHorizontal: 10,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: COLORS.white,
+                        ...FONTS.h3,
+                      }}
+                    >
+                      {item.companyName}
+                    </Text>
+                    <Text
+                      style={{
+                        color: COLORS.white,
+                        ...FONTS.h4,
+                      }}
+                    >
+                      {item.price.toFixed(2)}
+                    </Text>
+                    {item.percentage != 0 && (
+                      <Image
+                        source={icons.upArrow}
+                        style={{
+                          height: 10,
+                          width: 10,
+                          tintColor: priceColor,
+                          marginTop: 10,
+                          transform:
+                            item.percentage > 0
+                              ? [{ rotate: "45deg" }]
+                              : [{ rotate: "125deg" }],
+                        }}
+                      />
+                    )}
+
+                    <Text
+                      style={{
+                        marginLeft: 20,
+                        color: priceColor,
+                        ...FONTS.body5,
+                        lineHeight: 15,
+                        marginTop: -12,
+                      }}
+                    >
+                      {item?.percentage}%
+                    </Text>
+                  </View>
                 );
               }}
               keyExtractor={(item) => item._id}
+              ItemSeparatorComponent={ItemDividerWatch}
             />
           </View>
         </View>

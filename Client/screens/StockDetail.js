@@ -101,7 +101,7 @@ const StockDetail = (props) => {
             }}
             onPress={() => submitPortfolio()}
           />
-          <IconTextButton
+          {/* <IconTextButton
             label="Transfer"
             containerStyle={{
               flex: 1,
@@ -119,7 +119,7 @@ const StockDetail = (props) => {
               marginRight: SIZES.radius,
             }}
             onPress={() => console.log("withdraw")}
-          />
+          /> */}
         </View>
       </View>
     );

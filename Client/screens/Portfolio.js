@@ -68,7 +68,7 @@ const Portfolio = (props) => {
             <Text
               style={{
                 marginTop: 50,
-                marginLeft: 10,
+                marginLeft: 80,
                 color: COLORS.white,
                 ...FONTS.largeTitle,
               }}
@@ -83,9 +83,9 @@ const Portfolio = (props) => {
           title="Current Balance"
           displayAmount={totalWallet}
           containerStyle={{
-            marginTop: SIZES.radiusTop,
+            marginTop: 20,
             marginBottom: SIZES.padding,
-            marginLeft: 25,
+            marginLeft: 130,
           }}
         />
       </View>
@@ -101,7 +101,7 @@ const Portfolio = (props) => {
           alignItems: "center",
         }}
         // onPress={() => navigation.navigate("AddPortfolio")}
-        // onPress={() => navigation.navigate("SignIn")}
+        onPress={() => navigation.navigate("SignIn")}
       >
         <Text
           style={{
