@@ -34,8 +34,8 @@ const SignIn = ({ navigation }) => {
     console.log("data", data);
     const res = await dispatch(userAction.loginUser(data));
     if (res.status == 200) {
-      navigation.popToTop();
-      // navigation.navigate("Portfolio");
+      // navigation.popToTop();
+      navigation.navigate("Portfolio");
     }
   };
 

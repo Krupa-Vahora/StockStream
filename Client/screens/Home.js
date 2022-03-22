@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { View, Text, TouchableOpacity, FlatList, Image } from "react-native";
 import { MainLayout } from ".";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { COLORS, FONTS, SIZES, icons } from "../constants";
 
 import * as stockAction from "../store/market/stockAction";
-import { WatchListButton, ScriptInfo } from "../components";
+import { ScriptInfo } from "../components";
 import * as watchlistAction from "../store/watchlist/watchlistAction";
 
 const SCRIPT_DATA = [
@@ -22,13 +22,10 @@ const SCRIPT_DATA = [
   },
 ];
 
-const Home = ({ coins, navigation }) => {
-  const [selectedCoin, setSelectedCoin] = useState(null);
-
+const Home = ({ navigation }) => {
   const stock = useSelector((state) => state.stock.stocks);
   const stockInfo = useSelector((state) => state.stock.stockInfo);
   const watchlistInfo = useSelector((state) => state.watchlist.getwatchlist);
-  // console.log("watch", watchlistInfo);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -55,19 +52,8 @@ const Home = ({ coins, navigation }) => {
     return (
       <View
         style={{
-          marginTop: 20,
+          marginTop: 15,
           height: 110,
-          width: 1,
-          backgroundColor: "white",
-        }}
-      />
-    );
-  };
-  const ItemDividerWatch = () => {
-    return (
-      <View
-        style={{
-          height: 80,
           width: 1,
           backgroundColor: "white",
         }}
@@ -81,7 +67,12 @@ const Home = ({ coins, navigation }) => {
         style={{
           alignItems: "center",
           justifyContent: "center",
-          marginTop: 50,
+          marginTop: 40,
+          padding: 10,
+          paddingTop: -10,
+          borderRadius: 10,
+          borderColor: COLORS.white,
+          borderWidth: 1,
         }}
       >
         {/* sensex and nifty info  */}
@@ -185,6 +176,10 @@ const Home = ({ coins, navigation }) => {
                   <View
                     style={{
                       marginHorizontal: 10,
+                      borderRadius: 10,
+                      borderColor: COLORS.white,
+                      borderWidth: 1,
+                      padding: 10,
                     }}
                   >
                     <Text
@@ -234,7 +229,6 @@ const Home = ({ coins, navigation }) => {
                 );
               }}
               keyExtractor={(item) => item._id}
-              ItemSeparatorComponent={ItemDividerWatch}
             />
           </View>
         </View>
@@ -352,60 +346,3 @@ const Home = ({ coins, navigation }) => {
 };
 
 export default Home;
-// function mapStateToProps(state) {
-//   return {
-//     myHoldings: state.marketReducer.myHoldings,
-//     coins: state.marketReducer.coins,
-//   };
-// }
-
-// function mapDispatchToProps(dispatch) {
-//   return {
-//     getHoldings: (
-//       holdings,
-//       currency,
-//       coinList,
-//       orderBy,
-//       sparkline,
-//       priceChangePerc,
-//       perPage,
-//       page
-//     ) => {
-//       return dispatch(
-//         getHoldings(
-//           holdings,
-//           currency,
-//           coinList,
-//           orderBy,
-//           sparkline,
-//           priceChangePerc,
-//           perPage,
-//           page
-//         )
-//       );
-//     },
-
-//     getCoinMarket: (
-//       currency,
-//       coinList,
-//       orderBy,
-//       sparkline,
-//       priceChangePerc,
-//       perPage,
-//       page
-//     ) => {
-//       return dispatch(
-//         getCoinMarket(
-//           currency,
-//           coinList,
-//           orderBy,
-//           sparkline,
-//           priceChangePerc,
-//           perPage,
-//           page
-//         )
-//       );
-//     },
-//   };
-// }
-// export default connect(mapStateToProps, mapDispatchToProps)(Home);

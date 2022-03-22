@@ -6,7 +6,7 @@ import { BalanceInfo } from "../components";
 import { COLORS, FONTS, SIZES, icons } from "../constants";
 import { useSelector, useDispatch } from "react-redux";
 import * as portfolioAction from "../store/portfolio/portfolioAction";
-
+import * as UserAction from "../store/user/userAction";
 const Portfolio = (props) => {
   const { navigation, route } = props;
   const [newcount, setcount] = useState("");
@@ -16,6 +16,9 @@ const Portfolio = (props) => {
 
   const portfolio = useSelector((state) => state.portfolio.getportfolio);
   console.log("portfolio", portfolio);
+
+  // const user = useSelector((state) => state.user.registerUser);
+  // console.log("user", user);
 
   useEffect(() => {
     let count = 0;
@@ -28,6 +31,7 @@ const Portfolio = (props) => {
 
   const dispatch = useDispatch();
   useEffect(() => {
+    // dispatch(UserAction.registerUser());
     dispatch(portfolioAction.getPort());
   }, []);
 
@@ -77,54 +81,20 @@ const Portfolio = (props) => {
             </Text>
           </TouchableOpacity>
         </View>
-        <AddPortfolio value="Add New Stock" type="button" />
+        {/* <AddPortfolio value="SignIn" type="button" /> */}
 
         <BalanceInfo
           title="Current Balance"
           displayAmount={totalWallet}
           containerStyle={{
-            marginTop: 20,
+            marginTop: 10,
             marginBottom: SIZES.padding,
-            marginLeft: 130,
+            marginLeft: 125,
           }}
         />
       </View>
     );
   }
-
-  const AddPortfolio = ({ value, type }) => {
-    return (
-      <TouchableOpacity
-        style={{
-          flexDirection: "row",
-          height: 50,
-          alignItems: "center",
-        }}
-        // onPress={() => navigation.navigate("AddPortfolio")}
-        onPress={() => navigation.navigate("SignIn")}
-      >
-        <Text
-          style={{
-            flex: 1,
-            color: COLORS.white,
-            ...FONTS.h3,
-            textAlign: "right",
-          }}
-        >
-          {value}
-        </Text>
-        <Image
-          source={icons.rightArrow}
-          style={{
-            height: 15,
-            width: 15,
-            tintColor: COLORS.white,
-          }}
-        />
-      </TouchableOpacity>
-    );
-  };
-
   return (
     <MainLayout>
       <View

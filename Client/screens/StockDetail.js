@@ -173,12 +173,12 @@ const StockDetail = (props) => {
         >
           <Overview
             label="High"
-            price={stockData.high.toFixed(2)}
+            price={stockData.high}
             containerStyle={{ color: COLORS.green }}
           />
           <Overview
             label="Low"
-            price={stockData.low.toFixed(2)}
+            price={stockData.low}
             containerStyle={{ color: COLORS.red }}
           />
         </View>

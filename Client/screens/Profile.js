@@ -9,10 +9,8 @@ import {
   Switch,
 } from "react-native";
 import { MainLayout } from ".";
-
-import * as userAction from "../store/user/userAction";
-import { useSelector, useDispatch } from "react-redux";
 import { COLORS, FONTS, SIZES, dummyData, icons } from "../constants";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SectionTitle = ({ title }) => {
   return (
@@ -105,7 +103,18 @@ const Setting = ({ title, value, type, onPress }) => {
 };
 
 const Profile = ({ navigation }) => {
-  const [faceId, setFaceId] = useState(true);
+  const [data, setData] = useState("");
+
+  useEffect(() => {
+    AsyncStorage.getItem("userData")
+      .then((res) => {
+        JSON.parse(res);
+        console.log("user", JSON.parse(res));
+        setData(JSON.parse(res).user);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+  console.log("data====", data);
   return (
     <MainLayout>
       <View
@@ -116,7 +125,7 @@ const Profile = ({ navigation }) => {
         }}
       >
         {/* Header  */}
-        {/* <Headerbar title="Profile" /> */}
+
         <View
           style={{
             alignItems: "center",
@@ -152,20 +161,30 @@ const Profile = ({ navigation }) => {
                 style={{
                   color: COLORS.white,
                   ...FONTS.h2,
-                  paddingLeft: 100,
-                  // textAlign: "center",
+                  marginLeft: 105,
                 }}
               >
-                {dummyData.profile.name}
+                {data.name}
               </Text>
+              <SectionTitle title="Email" />
               <Text
                 style={{
                   color: COLORS.white,
                   ...FONTS.h3,
-                  marginTop: 20,
+                  marginTop: 30,
                 }}
               >
-                {dummyData.profile.email}
+                {data.email}
+              </Text>
+              <SectionTitle title="Contact" />
+              <Text
+                style={{
+                  color: COLORS.white,
+                  ...FONTS.h3,
+                  marginTop: 30,
+                }}
+              >
+                {data.phone}
               </Text>
             </View>
             {/* status */}
@@ -173,7 +192,7 @@ const Profile = ({ navigation }) => {
               style={{
                 flexDirection: "row",
                 alignItems: "center",
-                marginTop: 40,
+                marginTop: 10,
               }}
             >
               <Image
@@ -203,32 +222,6 @@ const Profile = ({ navigation }) => {
             type="button"
             onPress={() => navigation.navigate("Home")}
           />
-
-          <SectionTitle title="Security" />
-          <Setting
-            title="FaceID"
-            value={faceId}
-            type="switch"
-            onPress={(value) => setFaceId(value)}
-          />
-          {/* <Setting
-            title="Password Settings"
-            value=""
-            type="button"
-            onPress={() => console.log("PRESSED")}
-          /> */}
-          {/* <Setting
-            title="Change Password "
-            value=""
-            type="button"
-            onPress={() => console.log("PRESSED")}
-          />
-          <Setting
-            title="Two Factor Authentication"
-            value=""
-            type="button"
-            onPress={() => console.log("PRESSED")}
-          /> */}
         </ScrollView>
       </View>
     </MainLayout>

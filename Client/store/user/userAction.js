@@ -9,11 +9,14 @@ export const registerUser = (data) => {
   return async (dispatch) => {
     try {
       const response = await axios.post(`${baseUrl}/user/register`, data);
+
       const token = await AsyncStorage.setItem(
         "registerkey",
         response.data.token
       );
-      console.log("token:", token);
+
+      await AsyncStorage.setItem("userData", JSON.stringify(response.data));
+      console.log("token:", response.data.token);
       dispatch({ type: NEW_USER_DATA, user: response.data.user });
       return response;
     } catch (error) {

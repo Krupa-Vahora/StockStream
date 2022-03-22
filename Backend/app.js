@@ -12,6 +12,7 @@ const stockRoute = require("./routes/stockRoute");
 const newsRoute = require("./routes/newsRoute");
 const userRoute = require("./routes/userRoute");
 const portfolioRoute = require("./routes/portfolioRoute");
+const watchlistRoute = require("./routes/watchlistRoute");
 
 const con = mongoose.connection;
 con.on("open", () => {
@@ -29,6 +30,7 @@ app.use("/stock", stockRoute);
 app.use("/news", newsRoute);
 app.use("/user", userRoute);
 app.use("/portfolio", portfolioRoute);
+app.use("/watchlist", watchlistRoute);
 
 app.listen(3000, () => {
   console.log("Server Started 3000");

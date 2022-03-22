@@ -28,7 +28,7 @@ const Signup = ({ navigation }) => {
     };
     const res = await dispatch(userAction.registerUser(data));
     if (res.status == 201) {
-      navigation.popToTop();
+      navigation.navigate("Home");
     }
   };
   return (

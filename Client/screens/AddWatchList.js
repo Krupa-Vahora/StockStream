@@ -1,18 +1,10 @@
-import {
-  View,
-  Text,
-  Button,
-  FlatList,
-  TouchableOpacity,
-  Image,
-  Alert,
-} from "react-native";
+import { View, Text, FlatList, TouchableOpacity, Image } from "react-native";
 
 import React, { useEffect, useState } from "react";
 import { COLORS, FONTS, SIZES, icons } from "../constants";
 import * as stockAction from "../store/market/stockAction";
 import * as watchlistAction from "../store/watchlist/watchlistAction";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { TextInput } from "react-native-gesture-handler";
 const AddWatchList = ({ navigation }) => {
   const [stockData, setStockData] = useState([]);
@@ -59,14 +51,14 @@ const AddWatchList = ({ navigation }) => {
 
     const res = await dispatch(watchlistAction.sendWatch(data));
     dispatch(watchlistAction.getWatch());
-    Alert.alert("Stock Added to your watchlist");
+    // Alert.alert("Stock Added to your watchlist");
     // if (res.type == "SEND_WATCH_DATA") {
     // navigation.popToTop();
     // }
   };
   function deleteData(id) {
     dispatch(watchlistAction.deleteWatch(id));
-    Alert.alert("Stock Remove to your watchlist");
+    // Alert.alert("Stock Remove to your watchlist");
     dispatch(watchlistAction.getWatch());
   }
 

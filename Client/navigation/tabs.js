@@ -1,32 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { connect } from "react-redux";
 import { setTradeModalVisibility } from "../store/tab/tabAction";
-import { Home, Portfolio, Market, Profile, News } from "../screens";
+import { Home, Portfolio, Market, Profile, News, SignIn } from "../screens";
 import { COLORS, icons } from "../constants";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { TabIcon } from "../components";
 const Tab = createBottomTabNavigator();
-// const TabBarCustomButton = ({ children, onPress }) => {
-//   return (
-//     <TouchableOpacity
-//       style={{
-//         flex: 1,
-//         justifyContent: "center",
-//         alignItems: "center",
-//       }}
-//       onPress={onPress}
-//     >
-//       {children}
-//     </TouchableOpacity>
-//   );
-// };
-const Tabs = ({ setTradeModalVisibility, isTradeModalVisible }) => {
-  // function tradeTabButtonOnClickHandler() {
-  //   setTradeModalVisibility(!isTradeModalVisible);
-  // }
 
+const Tabs = ({ setTradeModalVisibility, isTradeModalVisible }) => {
+  const [authToken, setAuthToken] = useState("");
+
+  useEffect(() => {
+    AsyncStorage.getItem("registerkey")
+      .then((res) => {
+        console.log("res", res);
+        setAuthToken(res);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  });
   return (
     <Tab.Navigator
       tabBarOptions={{
@@ -61,7 +57,7 @@ const Tabs = ({ setTradeModalVisibility, isTradeModalVisible }) => {
 
       <Tab.Screen
         name="Portfolio"
-        component={Portfolio}
+        component={authToken ? Portfolio : SignIn}
         options={{
           tabBarIcon: ({ focused }) => {
             if (!isTradeModalVisible) {
@@ -123,40 +119,10 @@ const Tabs = ({ setTradeModalVisibility, isTradeModalVisible }) => {
           },
         }}
       />
-      {/* <Tab.Screen
-        name="Trade"
-        component={Home}
-        options={{
-          tabBarIcon: ({ focused }) => {
-            return (
-              <TabIcon
-                focused={focused}
-                icon={isTradeModalVisible ? icons.close : icons.trade}
-                iconStyle={
-                  isTradeModalVisible
-                    ? {
-                        width: 15,
-                        height: 15,
-                      }
-                    : null
-                }
-                label="Trade"
-                isTrade={true}
-              />
-            );
-          },
-          tabBarButton: (props) => (
-            <TabBarCustomButton
-              {...props}
-              onPress={() => tradeTabButtonOnClickHandler()}
-            />
-          ),
-        }}
-      /> */}
 
       <Tab.Screen
         name="Profile"
-        component={Profile}
+        component={authToken ? Profile : SignIn}
         options={{
           tabBarIcon: ({ focused }) => {
             if (!isTradeModalVisible) {

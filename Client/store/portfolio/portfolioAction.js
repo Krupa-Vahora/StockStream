@@ -7,7 +7,7 @@ export const DELETE_PORT_DATA = "DELETE_PORT_DATA";
 export const getPort = () => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${baseUrl}/portfolio/allPortStock`);
+      const response = await axios.get(`${baseUrl}/portfolio/allPortStock/`);
       const resData = await response.data;
 
       dispatch({ type: GET_PORT_DATA, portfolio: resData });

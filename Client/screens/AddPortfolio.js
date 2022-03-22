@@ -1,6 +1,6 @@
 import React from "react";
-import { View, Text, TextInput, Button } from "react-native";
-import { COLORS, FONTS, SIZES } from "../constants";
+import { View, Text, Button } from "react-native";
+import { COLORS, FONTS } from "../constants";
 import { InputPortfolio } from "../components";
 const AddPortfolio = ({ navigation }) => {
   return (
